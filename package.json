@@ -16,7 +16,9 @@
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^2.0.1",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-replace": "^3.0.0",
     "@web/dev-server": "^0.1.17",
     "@web/dev-server-rollup": "^0.3.13",
@@ -27,7 +29,7 @@
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-summary": "^1.2.3",
     "rollup-plugin-terser": "^7.0.2",
-    "typescript": "^4.5.3"
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@lit/reactive-element": "^1.0.0",
@@ -36,7 +38,6 @@
     "@vaadin/router": "^1.7.4",
     "lit": "^2.0.0",
     "lit-element": "^3.0.0",
-    "lit-html": "^2.0.0",
-    "ts-node": "^10.9.1"
+    "lit-html": "^2.0.0"
   }
 }

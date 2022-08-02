@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "Node",
+    "target": "es2019",
+    "module": "es2020",
+    "moduleResolution": "node",
     "lib": [
       "es2020",
       "dom",
@@ -16,7 +16,7 @@
     "noImplicitAny": false,
     "outDir": "./out",
     "rootDir": "./src",
-    "importHelpers": false,
+    "importHelpers": false
   },
   "include": [
     "src/**/*.ts",
