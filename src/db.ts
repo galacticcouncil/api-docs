@@ -1,12 +1,13 @@
 import {defAtom} from '@thi.ng/atom/atom';
-import {defCursor} from '@thi.ng/atom/cursor';
 
 interface State {
-  api: string;
+  chain: string;
+  name: string;
+  version: string;
 }
 
 export const db = defAtom<State>({
-  api: null,
+  chain: null,
+  name: null,
+  version: null
 });
-
-export const apiCursor = defCursor(db, ['api']);

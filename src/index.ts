@@ -4,7 +4,7 @@ import {Router} from '@vaadin/router';
 import './screen/home';
 import './screen/not-found';
 
-import {initApi, testApi} from './events';
+import {testApi} from './events';
 import './app';
 
 const routes = [
