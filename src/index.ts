@@ -30,8 +30,7 @@ router.setRoutes(routes);
 
 /* Init */
 //testApi('wss://rpc.polkadot.io');
-
-//testApi('wss://rpc-01.basilisk.hydradx.io');
-testApi('wss://rpc-01.hydradx.io');
+testApi('wss://rpc-01.basilisk.hydradx.io');
+//testApi('wss://rpc-01.hydradx.io');
 
 

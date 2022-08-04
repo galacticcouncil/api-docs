@@ -1,5 +1,4 @@
-const {ApiPromise, WsProvider} = window.polkadotApi
-
+import {ApiPromise, WsProvider} from '@polkadot/api';
 import {db} from './db';
 
 export async function testApi(wsRpcUrl: string) {

@@ -1,9 +1,9 @@
 import {defAtom} from '@thi.ng/atom/atom';
 
 export interface State {
-  chain: string;
-  name: string;
-  version: string;
+  chain: any;
+  name: any;
+  version: any;
   metadata: any;
 }
 
