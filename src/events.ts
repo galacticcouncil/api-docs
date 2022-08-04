@@ -1,5 +1,4 @@
-//@ts-ignore
-const {ApiPromise, WsProvider} = window.polkadotApi;
+const {ApiPromise, WsProvider} = window.polkadotApi
 
 import {db} from './db';
 
@@ -8,15 +7,17 @@ export async function testApi(wsRpcUrl: string) {
 
   const api = await ApiPromise.create({provider});
 
-  const [chain, nodeName, nodeVersion] = await Promise.all([
+  const [chain, nodeName, nodeVersion, metadata] = await Promise.all([
     api.rpc.system.chain(),
     api.rpc.system.name(),
     api.rpc.system.version(),
+    api.runtimeMetadata.asLatest,
   ]);
 
   db.reset({
     chain: chain,
     name: nodeName,
     version: nodeVersion,
+    metadata: metadata,
   });
 }

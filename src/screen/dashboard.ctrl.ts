@@ -1,13 +1,13 @@
 import {ReactiveController, ReactiveControllerHost} from 'lit';
 
-import {db} from '../db';
+import {db, State} from '../db';
 
-const WATCH_ID = 'Chain';
+const WATCH_ID = 'Chain info';
 
-export class HomeController implements ReactiveController {
+export class DashboardController implements ReactiveController {
   private readonly host: ReactiveControllerHost;
 
-  data = {};
+  data: State = null;
 
   constructor(host: ReactiveControllerHost) {
     this.data = db.deref();
@@ -17,7 +17,6 @@ export class HomeController implements ReactiveController {
 
   hostConnected() {
     db.addWatch(WATCH_ID, (id, prev, curr) => {
-      console.log(curr);
       this.data = curr;
       this.host.requestUpdate();
     });

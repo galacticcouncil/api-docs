@@ -166,4 +166,28 @@ export const baseStyles = css`
       max-width: 1290px;
     }
   }
+
+  /* Section */
+
+  section {
+    padding-top: 75px;
+  }
+
+  @media (min-width: 768px) {
+    section > div {
+      margin-left: 8.33333%;
+      flex: 0 0 83.33333%;
+      max-width: 83.33333%;
+    }
+  }
+
+  section h2 {
+    font-weight: 700;
+    font-size: 30px;
+  }
+
+  section h3 {
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
 `;
