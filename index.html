@@ -9,7 +9,27 @@
 
     <base href="/" />
 
-    <style></style>
+    <style>
+      :root {
+        --toolbar-height: 72px;
+        --drawer-width: 225px;
+        --drawer-background: #fff;
+        --color-main: #444444;
+        --color-secondary: #d0b274;
+      }
+
+      body {
+        font-family: 'Helvetica', sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        font-style: normal;
+        font-weight: 400;
+        margin: 0;
+        color: var(--color-main);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
