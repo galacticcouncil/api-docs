@@ -1,10 +1,11 @@
 import {Router} from '@vaadin/router';
+import {createApi} from './polka/api';
 
 /* Screens */
 import './screen/dashboard';
+import './screen/pallet/summary';
 import './screen/not-found';
 
-import {testApi} from './events';
 import './app';
 
 const routes = [
@@ -15,6 +16,10 @@ const routes = [
       {
         path: '',
         component: 'app-dashboard',
+      },
+      {
+        path: 'pallets/:id',
+        component: 'app-pallet-summary',
       },
     ],
   },
@@ -29,8 +34,4 @@ export const router = new Router(outlet);
 router.setRoutes(routes);
 
 /* Init */
-//testApi('wss://rpc.polkadot.io');
-testApi('wss://rpc-01.basilisk.hydradx.io');
-//testApi('wss://rpc-01.hydradx.io');
-
-
+createApi('wss://rpc-01.basilisk.hydradx.io', () => {});
