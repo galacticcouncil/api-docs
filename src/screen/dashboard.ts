@@ -14,7 +14,7 @@ export class Dashboard extends LitElement {
     baseStyles,
     css`
       .dashboard {
-        height: 100vh;
+        height: calc(100vh - var(--toolbar-height));
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -33,22 +33,22 @@ export class Dashboard extends LitElement {
 
   render() {
     return html` ${when(
-      this.db.state.system,
+      this.db.state.ready,
       () => html`
         <div class="dashboard">
           <div class="info">
             <h1>API Doc</h1>
             <div>
               <span>Chain:</span>
-              <span class="mono">${this.db.state.system.chain}</span>
+              <span class="mono">${this.db.state.apiState.systemChain}</span>
             </div>
             <div>
               <span>Name:</span>
-              <span class="mono">${this.db.state.system.name}</span>
+              <span class="mono">${this.db.state.apiState.systemName}</span>
             </div>
             <div>
               <span>Version:</span>
-              <span class="mono">${this.db.state.system.version}</span>
+              <span class="mono">${this.db.state.apiState.systemVersion}</span>
             </div>
             <div class="links">
               <div class="goto">

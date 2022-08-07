@@ -1,12 +1,16 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
+import {classMap} from 'lit/directives/class-map.js';
 
-import {baseStyles} from '../../base.css';
+import {baseStyles} from '../base.css';
 
-import {PalletDoc} from '../../metadata/pallet';
+import {PalletDoc} from '../polka/meta/pallet';
 
 @customElement('app-navigation')
 export class Navigation extends LitElement {
+  @property({type: String})
+  section = null;
+
   @property({attribute: false})
   pallets = [];
 
@@ -27,9 +31,13 @@ export class Navigation extends LitElement {
         width: var(--drawer-width);
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
+        overflow-y: scroll;
         transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
-        background: var(--drawer-background);
+        background: var(--color-alternative);
+      }
+
+      .navigation:hover {
+        overflow-y: scroll;
       }
 
       .toolbar {
@@ -40,7 +48,7 @@ export class Navigation extends LitElement {
         padding: 0 16px;
         position: sticky;
         top: 0;
-        background-color: var(--drawer-background);
+        background-color: var(--color-alternative);
         z-index: 1;
         opacity: 0.95;
       }
@@ -66,11 +74,11 @@ export class Navigation extends LitElement {
 
       .menu .category {
         padding: 8px 16px;
-        font-weight: 400;
+        font-weight: 600;
         line-height: 1.5;
         text-transform: uppercase;
         position: sticky;
-        background: var(--drawer-background);
+        background: var(--color-alternative);
         color: var(--color-secondary);
       }
 
@@ -92,17 +100,36 @@ export class Navigation extends LitElement {
         cursor: pointer;
       }
 
+      .menu .items > a.selected {
+        background-color: #fff;
+        border-left: 5px solid var(--color-secondary);
+        border-right: 2px solid var(--color-alternative);
+      }
+
+      .menu .items > a.selected > span {
+        margin-left: -5px;
+      }
+
       .menu .items > a:hover {
         color: var(--color-secondary);
       }
     `,
   ];
 
+  updateHeader(id: string) {
+    const options = {
+      bubbles: true,
+      composed: true,
+      detail: {id: id},
+    };
+    this.dispatchEvent(new CustomEvent('update-header', options));
+  }
+
   render() {
     return html`
       <div class="navigation">
         <div class="toolbar">
-          <a href="/">
+          <a href="/" @click=${() => this.updateHeader('')}>
             <img src="/assets/img/logo/basilisk.svg" />
           </a>
           <div>
@@ -114,7 +141,17 @@ export class Navigation extends LitElement {
           <span class="category">Pallets</span>
           <div class="items">
             ${this.pallets.map((item: PalletDoc) => {
-              return html` <a class=""> ${item.name} </a> `;
+              const itemClasses = {
+                selected: this.section === item.name,
+              };
+              return html`
+                <a
+                  class=${classMap(itemClasses)}
+                  href="/pallets/${item.name}"
+                  @click=${() => this.updateHeader(item.name)}
+                  ><span> ${item.name} </span>
+                </a>
+              `;
             })}
           </div>
           <span class="category">RPC Calls</span>
