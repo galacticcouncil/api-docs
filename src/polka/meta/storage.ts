@@ -5,11 +5,11 @@ import type {StorageEntry} from '@polkadot/types/primitive/types';
 import type {StorageEntryTypeV14} from '@polkadot/types/interfaces';
 import type {Registry} from '@polkadot/types/types';
 
-export interface StorageDoc {
-  name: string;
+import type {Doc} from '../types';
+
+export interface StorageDoc extends Doc {
   input: string;
   output: string;
-  doc: string;
 }
 
 function unwrapStorageInput(registry: Registry, type: StorageEntryTypeV14) {

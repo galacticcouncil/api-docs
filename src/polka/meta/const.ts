@@ -2,10 +2,10 @@ import {ApiPromise} from '@polkadot/api';
 import {getSiName} from '@polkadot/types/metadata/util';
 import type {ConstantCodec} from '@polkadot/types/metadata/decorate/types';
 
-export interface ConstDoc {
-  name: string;
+import type {Doc} from '../types';
+
+export interface ConstDoc extends Doc {
   type: string;
-  doc: string;
 }
 
 export function listConst(

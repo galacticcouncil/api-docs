@@ -3,10 +3,10 @@ import {getTypeDef} from '@polkadot/types/create';
 import type {TypeDef} from '@polkadot/types/types';
 import type {SubmittableExtrinsicFunction} from '@polkadot/api/types';
 
-export interface ExtrinsicDoc {
-  name: string;
+import type {Doc} from '../types';
+
+export interface ExtrinsicDoc extends Doc {
   input: string;
-  doc: string;
 }
 
 interface ParamDef {

@@ -11,3 +11,8 @@ export interface ApiState {
   systemName: string;
   systemVersion: string;
 }
+
+export interface Doc {
+  name: string;
+  doc: string;
+}

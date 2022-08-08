@@ -1,8 +1,8 @@
 import {ApiPromise} from '@polkadot/api';
 
-export interface PalletDoc {
-  name: string;
-}
+import type {Doc} from '../types';
+
+export interface PalletDoc extends Doc {}
 
 export function listPallets(api: ApiPromise): Array<PalletDoc> {
   return Object.keys(api.query)
