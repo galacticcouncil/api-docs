@@ -1,5 +1,9 @@
 # api-gen
 
+## Live Master
+
+Visit https://galacticcouncil.github.io/api-docs/
+
 ## Setting up a development environment
 
 Prerequisites
