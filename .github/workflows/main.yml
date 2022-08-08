@@ -40,9 +40,9 @@ jobs:
         name: website
         path: dist
     - name: Deploy to GH Pages
-      uses: ad-m/github-push-action@v0.5.0
-      with:
-        github_token: ${{ secrets.GH_TOKEN }}
-        branch: website
-        force: true
-        directory: ./dist
+      uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
