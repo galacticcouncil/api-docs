@@ -132,7 +132,7 @@ export class Navigation extends LitElement {
       <div class="navigation">
         <div class="toolbar">
           <a href="" @click=${() => this.updateHeader('')}>
-            <img src="/assets/img/logo/basilisk.svg" />
+            <img src="assets/img/logo/basilisk.svg" />
           </a>
           <div>
             <span>${this.chain}</span>

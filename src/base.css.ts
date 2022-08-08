@@ -237,13 +237,13 @@ export const baseStyles = css`
   }
 
   .goto > a > .goto-img {
-    background-image: url(/assets/img/icon/chevron-right.svg);
+    background-image: url(assets/img/icon/chevron-right.svg);
     height: 24px;
     width: 24px;
     margin-right: 8px;
   }
 
   .goto:hover > a > .goto-img {
-    background-image: url(/assets/img/icon/chevron-right-alt.svg);
+    background-image: url(assets/img/icon/chevron-right-alt.svg);
   }
 `;
