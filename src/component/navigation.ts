@@ -108,6 +108,8 @@ export class Navigation extends LitElement {
 
       .menu .items > a.selected > span {
         margin-left: -5px;
+        color: var(--color-secondary);
+        font-weight: 600;
       }
 
       .menu .items > a:hover {

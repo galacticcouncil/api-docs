@@ -16,6 +16,9 @@ export class App extends LitElement implements BeforeEnterObserver {
   @property({type: String})
   section = null;
 
+  @property({attribute: false})
+  data = {pallets: [], loaded: false};
+
   static styles = css`
     header {
       height: var(--toolbar-height);
@@ -29,6 +32,18 @@ export class App extends LitElement implements BeforeEnterObserver {
 
   async onBeforeEnter(location: RouterLocation) {
     this.section = location.params.id as string;
+  }
+
+  async updated() {
+    if (this.db.state.ready && !this.data.loaded) {
+      const api = this.db.state.apiState.api;
+      const pallets = listPallets(api);
+
+      this.data = {
+        pallets: pallets,
+        loaded: true,
+      };
+    }
   }
 
   updateSection(e: CustomEvent) {
@@ -46,7 +61,7 @@ export class App extends LitElement implements BeforeEnterObserver {
           <nav>
             <app-navigation
               .section=${this.section}
-              .pallets=${listPallets(this.db.state.apiState.api)}
+              .pallets=${this.data.pallets}
               .chain=${this.db.state.apiState.systemChain}
               .version=${this.db.state.apiState.systemVersion}
               @update-header=${this.updateSection}
