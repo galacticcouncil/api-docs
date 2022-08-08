@@ -11,7 +11,8 @@
     "cleanup": "rimraf out && rimraf dist",
     "dev": "rimraf out & npm run compile:watch & npm run serve",
     "copy:assets": "mkdir -p dist && cp -R ./assets/ ./dist/assets/ && cp index.prod.html ./dist/index.html",
-    "build:prod": "rimraf dist && npm run copy:assets && esbuild src/index.ts --bundle --minify --outfile=dist/bundle.js"
+    "build:prod": "rimraf dist && npm run copy:assets && esbuild src/index.ts --bundle --minify --outfile=dist/bundle.js",
+    "build:run": "wds --app-index dist/index.html --open"
   },
   "devDependencies": {
     "@web/dev-server": "^0.1.17",
