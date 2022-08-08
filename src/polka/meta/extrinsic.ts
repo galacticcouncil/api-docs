@@ -6,7 +6,7 @@ import type {SubmittableExtrinsicFunction} from '@polkadot/api/types';
 export interface ExtrinsicDoc {
   name: string;
   input: string;
-  doc: any;
+  doc: string;
 }
 
 interface ParamDef {
@@ -52,6 +52,7 @@ export function listExtrinsics(
       const inputs = method.meta.args
         .map((arg) => arg.name.toString())
         .join(', ');
-      return <ExtrinsicDoc>{name: value, input: inputs, doc: method.meta.docs};
+      const doc = method.meta.docs.join(' ');
+      return <ExtrinsicDoc>{name: value, input: inputs, doc: doc};
     });
 }

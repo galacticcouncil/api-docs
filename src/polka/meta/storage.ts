@@ -9,6 +9,7 @@ export interface StorageDoc {
   name: string;
   input: string;
   output: string;
+  doc: string;
 }
 
 function unwrapStorageInput(registry: Registry, type: StorageEntryTypeV14) {
@@ -45,6 +46,7 @@ export function listStorage(
       } = section[value] as unknown as StorageEntry;
       const output = unwrapStorageType(api.registry, type, modifier.isOptional);
       const input = unwrapStorageInput(api.registry, type);
-      return <StorageDoc>{name: value, input: input, output: output};
+      const doc = docs.join(' ');
+      return <StorageDoc>{name: value, input: input, output: output, doc: doc};
     });
 }

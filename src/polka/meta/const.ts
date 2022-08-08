@@ -5,7 +5,7 @@ import type {ConstantCodec} from '@polkadot/types/metadata/decorate/types';
 export interface ConstDoc {
   name: string;
   type: string;
-  doc: any;
+  doc: string;
 }
 
 export function listConst(
@@ -24,6 +24,7 @@ export function listConst(
     .map((value) => {
       const method = section[value] as ConstantCodec;
       const type = getSiName(api.registry.lookup, method.meta.type);
-      return <ConstDoc>{name: value, type: type, doc: method.meta.docs};
+      const doc = method.meta.docs.join(' ');
+      return <ConstDoc>{name: value, type: type, doc: doc};
     });
 }

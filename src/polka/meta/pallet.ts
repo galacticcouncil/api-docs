@@ -9,8 +9,5 @@ export function listPallets(api: ApiPromise): Array<PalletDoc> {
     .filter((s) => !s.startsWith('$'))
     .sort()
     .filter((n) => Object.keys(api.query[n]).length)
-    .map((value) => {
-      console.log(value);
-      return <PalletDoc>{name: value}
-    });
+    .map((value) => <PalletDoc>{name: value});
 }
