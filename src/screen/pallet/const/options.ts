@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 import {classMap} from 'lit/directives/class-map.js';
 
-import {ConstDoc} from '../../../polka/meta/const';
+import type {ConstDoc} from '../../../polka/meta/const';
 
 import {baseStyles} from '../../../base.css';
 import {optionStyles} from '../options.css';
