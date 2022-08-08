@@ -1,24 +1,29 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
+import {choose} from 'lit/directives/choose.js';
 import {BeforeEnterObserver, RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from '../../db.ctrl';
 import {listStorage} from '../../polka/meta/storage';
 import {listExtrinsics} from '../../polka/meta/extrinsic';
 import {listConst} from '../../polka/meta/const';
+import type {Doc} from '../../polka/types';
 
 import {baseStyles} from '../../base.css';
 
 import './storage/options';
+import './storage/detail';
 import './extrinsics/options';
+import './extrinsics/detail';
 import './const/options';
+import './const/detail';
 
 @customElement('app-pallet')
 export class Pallet extends LitElement implements BeforeEnterObserver {
   private db = new DatabaseController(this, this.localName);
 
-  @property({type: String})
-  pallet = null;
+  @state()
+  params = null;
 
   @property({attribute: false})
   data = {storage: [], extrinsics: [], const: [], loaded: false};
@@ -41,35 +46,6 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
         position: relative;
       }
 
-      .menu .category {
-        padding: 4px 16px;
-        font-weight: 600;
-        line-height: 1.5;
-        text-transform: uppercase;
-        position: sticky;
-        color: var(--color-main);
-        background-color: #fff;
-      }
-
-      .menu .category {
-        top: 0;
-      }
-
-      .menu .items {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .menu .items > a {
-        padding: 4px 16px 4px 24px;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .menu .items > a:hover {
-        background-color: var(--color-action-hover);
-      }
-
       .info {
         padding: 40px 60px;
         max-width: 750px;
@@ -80,15 +56,15 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
   ];
 
   async onBeforeEnter(location: RouterLocation) {
-    this.pallet = location.params.id as string;
+    this.params = location.params;
   }
 
   async updated() {
     if (this.db.state.ready && !this.data.loaded) {
       const api = this.db.state.apiState.api;
-      const storage = listStorage(api, this.pallet);
-      const extrinsics = listExtrinsics(api, this.pallet);
-      const cons = listConst(api, this.pallet);
+      const storage = listStorage(api, this.params.pallet);
+      const extrinsics = listExtrinsics(api, this.params.pallet);
+      const cons = listConst(api, this.params.pallet);
 
       this.data = {
         storage: storage,
@@ -99,41 +75,72 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
     }
   }
 
+  getSelected(data: Array<Doc>) {
+    return data.filter((i) => i.name === this.params.item)[0];
+  }
+
   render() {
     return html`
       <div class="pallet">
         <div class="menu">
           <app-storage-opts
             .loaded=${this.data.loaded}
+            .selected=${this.params.item}
             .storage=${this.data.storage}
-            .pallet=${this.pallet}
+            .pallet=${this.params.pallet}
           ></app-storage-opts>
           <app-extrinsics-opts
             .loaded=${this.data.loaded}
+            .selected=${this.params.item}
             .extrinsics=${this.data.extrinsics}
-            .pallet=${this.pallet}
+            .pallet=${this.params.pallet}
           ></app-extrinsics-opts>
           <app-const-opts
             .loaded=${this.data.loaded}
+            .selected=${this.params.item}
             .const=${this.data.const}
-            .pallet=${this.pallet}
+            .pallet=${this.params.pallet}
           ></app-const-opts>
         </div>
-        <div class="info">
-          <h1>${this.pallet}</h1>
-          <div>
-            <span>Storage:</span>
-            <span class="mono">${this.data.storage.length}</span>
-          </div>
-          <div>
-            <span>Extrinsics:</span>
-            <span class="mono">${this.data.extrinsics.length}</span>
-          </div>
-          <div>
-            <span>Const:</span>
-            <span class="mono">${this.data.const.length}</span>
-          </div>
-        </div>
+        ${choose(
+          this.params.itemType,
+          [
+            [
+              'storages',
+              () => html`<app-storage
+                .item=${this.getSelected(this.data.storage)}
+              ></app-storage>`,
+            ],
+            [
+              'extrinsics',
+              () => html`<app-extrinsic
+                .item=${this.getSelected(this.data.extrinsics)}
+              ></app-extrinsic>`,
+            ],
+            [
+              'consts',
+              () =>
+                html`<app-const
+                  .item=${this.getSelected(this.data.const)}
+                ></app-const>`,
+            ],
+          ],
+          () => html`<div class="info">
+            <h1>${this.params.pallet}</h1>
+            <div>
+              <span>Storage:</span>
+              <span class="mono">${this.data.storage.length}</span>
+            </div>
+            <div>
+              <span>Extrinsics:</span>
+              <span class="mono">${this.data.extrinsics.length}</span>
+            </div>
+            <div>
+              <span>Const:</span>
+              <span class="mono">${this.data.const.length}</span>
+            </div>
+          </div>`
+        )}
       </div>
     `;
   }

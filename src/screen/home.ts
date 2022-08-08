@@ -6,8 +6,8 @@ import {DatabaseController} from '../db.ctrl';
 
 import {baseStyles} from '../base.css';
 
-@customElement('app-dashboard')
-export class Dashboard extends LitElement {
+@customElement('app-home')
+export class Home extends LitElement {
   private db = new DatabaseController(this, this.localName);
 
   static styles = [

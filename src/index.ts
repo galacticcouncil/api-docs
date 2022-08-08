@@ -2,7 +2,7 @@ import {Router} from '@vaadin/router';
 import {createApi} from './polka/api';
 
 /* Screens */
-import './screen/dashboard';
+import './screen/home';
 import './screen/pallet/summary';
 import './screen/not-found';
 
@@ -15,11 +15,20 @@ const routes = [
     children: [
       {
         path: '',
-        component: 'app-dashboard',
+        component: 'app-home',
       },
       {
-        path: 'pallets/:id',
-        component: 'app-pallet-summary',
+        path: 'pallets/:pallet',
+        children: [
+          {
+            path: '',
+            component: 'app-pallet',
+          },
+          {
+            path: '/:itemType/:item',
+            component: 'app-pallet',
+          },
+        ],
       },
     ],
   },

@@ -31,7 +31,7 @@ export class App extends LitElement implements BeforeEnterObserver {
   `;
 
   async onBeforeEnter(location: RouterLocation) {
-    this.section = location.params.id as string;
+    this.section = location.params.pallet as string;
   }
 
   async updated() {
