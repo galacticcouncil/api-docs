@@ -38,7 +38,7 @@ export class StorageOpts extends LitElement {
               return html`
                 <a
                   class=${classMap(itemClasses)}
-                  href="/pallets/${this.pallet}/storages/${item.name}"
+                  href="pallets/${this.pallet}/storages/${item.name}"
                 >
                   ${item.name}(${item.input}): ${item.output}</a
                 >

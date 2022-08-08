@@ -38,7 +38,7 @@ export class ConstOpts extends LitElement {
               return html`
                 <a
                   class=${classMap(itemClasses)}
-                  href="/pallets/${this.pallet}/consts/${item.name}"
+                  href="pallets/${this.pallet}/consts/${item.name}"
                 >
                   ${item.name}: ${item.type}</a
                 >

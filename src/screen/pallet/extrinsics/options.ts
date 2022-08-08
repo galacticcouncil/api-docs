@@ -36,7 +36,7 @@ export class ExtrinsicsOpts extends LitElement {
                 selected: this.selected === item.name,
               };
               return html`
-                <a class=${classMap(itemClasses)} href="/pallets/${this.pallet}/extrinsics/${item.name}">
+                <a class=${classMap(itemClasses)} href="pallets/${this.pallet}/extrinsics/${item.name}">
                   ${item.name}(${item.input})
                 </a>
               `;
