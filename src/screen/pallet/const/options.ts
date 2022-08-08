@@ -1,6 +1,7 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
+import {classMap} from 'lit/directives/class-map.js';
 
 import {ConstDoc} from '../../../polka/meta/const';
 
@@ -11,6 +12,9 @@ import {optionStyles} from '../options.css';
 export class ConstOpts extends LitElement {
   @property({type: String})
   pallet = null;
+
+  @property({type: String})
+  selected = null;
 
   @property({attribute: false})
   loaded = false;
@@ -28,8 +32,14 @@ export class ConstOpts extends LitElement {
           <div class="category">Const</div>
           <div class="items">
             ${this.const.map((item: ConstDoc) => {
+              const itemClasses = {
+                selected: this.selected === item.name,
+              };
               return html`
-                <a href="/pallets/${this.pallet}/consts/${item.name}">
+                <a
+                  class=${classMap(itemClasses)}
+                  href="/pallets/${this.pallet}/consts/${item.name}"
+                >
                   ${item.name}: ${item.type}</a
                 >
               `;

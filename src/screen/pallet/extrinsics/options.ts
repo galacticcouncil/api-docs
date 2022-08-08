@@ -1,8 +1,9 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
+import {classMap} from 'lit/directives/class-map.js';
 
-import {ExtrinsicDoc} from '../../../polka/meta/extrinsic';
+import type {ExtrinsicDoc} from '../../../polka/meta/extrinsic';
 
 import {baseStyles} from '../../../base.css';
 import {optionStyles} from '../options.css';
@@ -11,6 +12,9 @@ import {optionStyles} from '../options.css';
 export class ExtrinsicsOpts extends LitElement {
   @property({type: String})
   pallet = null;
+
+  @property({type: String})
+  selected = null;
 
   @property({attribute: false})
   loaded = false;
@@ -28,8 +32,11 @@ export class ExtrinsicsOpts extends LitElement {
           <div class="category">Extrinsics</div>
           <div class="items">
             ${this.extrinsics.map((item: ExtrinsicDoc) => {
+              const itemClasses = {
+                selected: this.selected === item.name,
+              };
               return html`
-                <a href="/pallets/${this.pallet}/extrinsics/${item.name}">
+                <a class=${classMap(itemClasses)} href="/pallets/${this.pallet}/extrinsics/${item.name}">
                   ${item.name}(${item.input})
                 </a>
               `;

@@ -26,6 +26,16 @@ export const optionStyles = css`
     transition: all 0.2s;
   }
 
+  .items > a.selected {
+    background-color: var(--color-secondary);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .items > a.selected:hover {
+    background-color: var(--color-secondary);
+  }
+
   .items > a:hover {
     background-color: var(--color-action-hover);
   }
