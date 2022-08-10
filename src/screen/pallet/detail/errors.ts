@@ -1,12 +1,16 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
+import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
 import {db} from '../../../db';
 import {lookupErrorMetadata} from '../../../polka/lookup';
 
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
+
+import showdown from 'showdown';
+const converter = new showdown.Converter();
 
 @customElement('app-error')
 export class ErrorDetail extends LitElement {
@@ -36,10 +40,14 @@ export class ErrorDetail extends LitElement {
           <h1>${this.item.name}</h1>
           <div class="doc">
             ${this.itemMetadata.docs.map((doc: string) => {
-              return html` <div>${doc}</div> `;
+              const ht = converter.makeHtml(doc);
+              return html` ${unsafeHTML(ht)}`;
             })}
           </div>
-          <pre>${this.item.name}</pre>
+          <div class="signature">
+            <pre>${this.item.name}</pre>
+            <span>Signature</span>
+          </div>
         </div>
       `
     )}`;

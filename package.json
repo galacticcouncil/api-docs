@@ -28,6 +28,7 @@
     "@vaadin/router": "^1.7.4",
     "lit": "^2.0.0",
     "lit-element": "^3.0.0",
-    "lit-html": "^2.0.0"
+    "lit-html": "^2.0.0",
+    "showdown": "^2.1.0"
   }
 }

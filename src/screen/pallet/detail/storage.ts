@@ -1,6 +1,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
+import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
 import {db} from '../../../db';
 import {
@@ -11,6 +12,9 @@ import {
 
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
+
+import showdown from 'showdown';
+const converter = new showdown.Converter();
 
 @customElement('app-storage')
 export class StorageDetail extends LitElement {
@@ -48,10 +52,14 @@ export class StorageDetail extends LitElement {
           <h1>${this.item.name}</h1>
           <div class="doc">
             ${this.itemMetadata.docs.map((doc: string) => {
-              return html` <div>${doc}</div> `;
+              const ht = converter.makeHtml(doc);
+              return html` ${unsafeHTML(ht)}`;
             })}
           </div>
-          <pre>${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre>
+          <div class="signature">
+            <pre>${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre>
+            <span>Signature</span>
+          </div>
         </div>
       `
     )}`;
