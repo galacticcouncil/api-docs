@@ -20,7 +20,6 @@ export function listPallets(metadata: MetadataLatest): Array<PalletDoc> {
     .map(
       (pallet: PalletMetadataLatest) => <PalletDoc>{name: pallet.name.toHuman()}
     )
-
     .sort(function (a: {name: string}, b: {name: string}) {
       return a.name.localeCompare(b.name);
     });

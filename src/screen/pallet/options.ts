@@ -65,7 +65,9 @@ export class ConstOpts extends LitElement {
           <div class="items">
             ${this.data.map((item: AssetDoc) => {
               const itemClasses = {
-                selected: this.params.item === item.name,
+                selected:
+                  this.params.item === item.name &&
+                  this.params.itemType === item.type,
               };
               return html`
                 <a

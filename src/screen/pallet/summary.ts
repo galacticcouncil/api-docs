@@ -10,14 +10,12 @@ import type {Doc} from '../../polka/types';
 
 import {baseStyles} from '../../base.css';
 
-/* import './storage/options';
-import './storage/detail';
-import './extrinsics/options';
-import './extrinsics/detail';
-import './const/options';
-import './const/detail'; */
-
 import './options';
+import './detail/storage';
+import './detail/extrinsics';
+import './detail/constants';
+import './detail/errors';
+import './detail/events';
 
 @customElement('app-pallet')
 export class Pallet extends LitElement implements BeforeEnterObserver {
@@ -88,9 +86,11 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
   }
 
   filterAssets(data: Array<AssetDoc>, type: AssetType) {
-    return data.filter(
-      (i) => i.type === type && i.section === this.params.pallet
-    );
+    return data
+      .filter((i) => i.type === type && i.section === this.params.pallet)
+      .sort(function (a: {name: string}, b: {name: string}) {
+        return a.name.localeCompare(b.name);
+      });
   }
 
   getSelected(data: Array<Doc>) {
@@ -148,6 +148,20 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
                 html`<app-const
                   .item=${this.getSelected(this.data.const)}
                 ></app-const>`,
+            ],
+            [
+              AssetType.error,
+              () =>
+                html`<app-error
+                  .item=${this.getSelected(this.data.errors)}
+                ></app-error>`,
+            ],
+            [
+              AssetType.event,
+              () =>
+                html`<app-event
+                  .item=${this.getSelected(this.data.events)}
+                ></app-event>`,
             ],
           ],
           () => html`<div class="info">

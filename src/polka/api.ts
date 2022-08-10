@@ -72,8 +72,6 @@ export async function createApi(
           .then((apiState: ApiState) => {
             const metadata = apiState.api.runtimeMetadata.asLatest;
             const assets = listAssets(metadata);
-            console.log(metadata.toHuman());
-
             db.reset({
               apiState: apiState,
               ready: true,
