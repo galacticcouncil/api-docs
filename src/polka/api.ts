@@ -3,6 +3,7 @@ import type {ChainType} from '@polkadot/types/interfaces';
 import type {ApiState} from './types';
 
 import {db} from './../db';
+import {listAssets} from './assets';
 
 interface ChainData {
   systemChain: string;
@@ -69,9 +70,15 @@ export async function createApi(
         console.log('API ready');
         loadOnReady(api)
           .then((apiState: ApiState) => {
+            const metadata = apiState.api.runtimeMetadata.asLatest;
+            const assets = listAssets(metadata);
+            console.log(metadata.toHuman());
+
             db.reset({
               apiState: apiState,
               ready: true,
+              metadata: metadata,
+              assets: assets,
             });
           })
           .catch(onError);

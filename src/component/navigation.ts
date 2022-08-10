@@ -4,7 +4,7 @@ import {classMap} from 'lit/directives/class-map.js';
 
 import {baseStyles} from '../base.css';
 
-import {PalletDoc} from '../polka/meta/pallet';
+import {PalletDoc} from '../polka/pallet';
 
 @customElement('app-navigation')
 export class Navigation extends LitElement {

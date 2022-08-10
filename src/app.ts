@@ -4,7 +4,7 @@ import {when} from 'lit/directives/when.js';
 import {BeforeEnterObserver, RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from './db.ctrl';
-import {listPallets} from './polka/meta/pallet';
+import {listPallets} from './polka/pallet';
 
 import './component/navigation';
 import './component/header';
@@ -36,8 +36,8 @@ export class App extends LitElement implements BeforeEnterObserver {
 
   async updated() {
     if (this.db.state.ready && !this.data.loaded) {
-      const api = this.db.state.apiState.api;
-      const pallets = listPallets(api);
+      const metadata = this.db.state.metadata;
+      const pallets = listPallets(metadata);
 
       this.data = {
         pallets: pallets,

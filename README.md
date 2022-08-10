@@ -1,6 +1,6 @@
 # api-gen
 
-## Live Master
+## Live [master]
 
 Visit https://galacticcouncil.github.io/api-docs/
 
