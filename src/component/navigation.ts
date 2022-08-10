@@ -8,8 +8,8 @@ import {PalletDoc} from '../polka/pallet';
 
 @customElement('app-navigation')
 export class Navigation extends LitElement {
-  @property({type: String})
-  section = null;
+  @property({attribute: false})
+  params = null;
 
   @property({attribute: false})
   pallets = [];
@@ -118,11 +118,11 @@ export class Navigation extends LitElement {
     `,
   ];
 
-  updateHeader(id: string) {
+  updateHeader(params: any) {
     const options = {
       bubbles: true,
       composed: true,
-      detail: {id: id},
+      detail: params,
     };
     this.dispatchEvent(new CustomEvent('update-header', options));
   }
@@ -131,7 +131,7 @@ export class Navigation extends LitElement {
     return html`
       <div class="navigation">
         <div class="toolbar">
-          <a href="" @click=${() => this.updateHeader('')}>
+          <a href="" @click=${() => this.updateHeader(null)}>
             <img src="assets/img/logo/basilisk.svg" />
           </a>
           <div>
@@ -144,13 +144,13 @@ export class Navigation extends LitElement {
           <div class="items">
             ${this.pallets.map((item: PalletDoc) => {
               const itemClasses = {
-                selected: this.section === item.name,
+                selected: this.params && this.params.pallet === item.name,
               };
               return html`
                 <a
                   class=${classMap(itemClasses)}
                   href="pallets/${item.name}"
-                  @click=${() => this.updateHeader(item.name)}
+                  @click=${() => this.updateHeader({pallet: item.name})}
                   ><span> ${item.name} </span>
                 </a>
               `;

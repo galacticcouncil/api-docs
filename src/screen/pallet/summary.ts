@@ -40,7 +40,7 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
       .pallet {
         border-top: 1px solid var(--color-alternative);
         display: grid;
-        grid-template-columns: 600px 1fr;
+        grid-template-columns: 350px 1fr;
         grid-template-areas: 'menu .';
       }
 

@@ -8,6 +8,7 @@ export interface State {
   ready: Boolean;
   metadata: MetadataLatest;
   assets: Array<AssetDoc>;
+  node: String;
 }
 
 export const db = defAtom<State>({
@@ -15,4 +16,5 @@ export const db = defAtom<State>({
   ready: false,
   metadata: null,
   assets: [],
+  node: null,
 });

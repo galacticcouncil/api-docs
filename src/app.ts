@@ -13,8 +13,8 @@ import './component/header';
 export class App extends LitElement implements BeforeEnterObserver {
   private db = new DatabaseController(this, this.localName);
 
-  @property({type: String})
-  section = null;
+  @property({attribute: false})
+  params = null;
 
   @property({attribute: false})
   data = {pallets: [], loaded: false};
@@ -31,7 +31,7 @@ export class App extends LitElement implements BeforeEnterObserver {
   `;
 
   async onBeforeEnter(location: RouterLocation) {
-    this.section = location.params.pallet as string;
+    this.params = location.params;
   }
 
   async updated() {
@@ -47,7 +47,7 @@ export class App extends LitElement implements BeforeEnterObserver {
   }
 
   updateSection(e: CustomEvent) {
-    this.section = e.detail.id;
+    this.params = e.detail;
   }
 
   render() {
@@ -56,11 +56,14 @@ export class App extends LitElement implements BeforeEnterObserver {
         this.db.state.ready,
         () => html`
           <header>
-            <app-header .section=${this.section}></app-header>
+            <app-header
+              .params=${this.params}
+              @update-header=${this.updateSection}
+            ></app-header>
           </header>
           <nav>
             <app-navigation
-              .section=${this.section}
+              .params=${this.params}
               .pallets=${this.data.pallets}
               .chain=${this.db.state.apiState.systemChain}
               .version=${this.db.state.apiState.systemVersion}

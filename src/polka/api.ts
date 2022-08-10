@@ -77,6 +77,7 @@ export async function createApi(
               ready: true,
               metadata: metadata,
               assets: assets,
+              node: apiUrl
             });
           })
           .catch(onError);
