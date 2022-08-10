@@ -34,7 +34,6 @@ export class EventDetail extends LitElement {
   }
 
   render() {
-    console.log(this.item)
     return html` ${when(
       this.itemMetadata,
       () => html`
