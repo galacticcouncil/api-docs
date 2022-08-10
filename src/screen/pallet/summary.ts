@@ -4,19 +4,20 @@ import {choose} from 'lit/directives/choose.js';
 import {BeforeEnterObserver, RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from '../../db.ctrl';
-import {listStorage} from '../../polka/meta/storage';
-import {listExtrinsics} from '../../polka/meta/extrinsic';
-import {listConst} from '../../polka/meta/const';
+import {AssetDoc, AssetType} from '../../polka/assets';
+
 import type {Doc} from '../../polka/types';
 
 import {baseStyles} from '../../base.css';
 
-import './storage/options';
+/* import './storage/options';
 import './storage/detail';
 import './extrinsics/options';
 import './extrinsics/detail';
 import './const/options';
-import './const/detail';
+import './const/detail'; */
+
+import './options';
 
 @customElement('app-pallet')
 export class Pallet extends LitElement implements BeforeEnterObserver {
@@ -26,7 +27,14 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
   params = null;
 
   @property({attribute: false})
-  data = {storage: [], extrinsics: [], const: [], loaded: false};
+  data = {
+    storage: [],
+    extrinsics: [],
+    const: [],
+    errors: [],
+    events: [],
+    loaded: false,
+  };
 
   static styles = [
     baseStyles,
@@ -61,18 +69,28 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
 
   async updated() {
     if (this.db.state.ready && !this.data.loaded) {
-      const api = this.db.state.apiState.api;
-      const storage = listStorage(api, this.params.pallet);
-      const extrinsics = listExtrinsics(api, this.params.pallet);
-      const cons = listConst(api, this.params.pallet);
+      const assets = this.db.state.assets;
+      const storage = this.filterAssets(assets, AssetType.storage);
+      const extrinsics = this.filterAssets(assets, AssetType.extrinsic);
+      const constants = this.filterAssets(assets, AssetType.const);
+      const errors = this.filterAssets(assets, AssetType.error);
+      const events = this.filterAssets(assets, AssetType.event);
 
       this.data = {
         storage: storage,
         extrinsics: extrinsics,
-        const: cons,
+        const: constants,
+        errors: errors,
+        events: events,
         loaded: true,
       };
     }
+  }
+
+  filterAssets(data: Array<AssetDoc>, type: AssetType) {
+    return data.filter(
+      (i) => i.type === type && i.section === this.params.pallet
+    );
   }
 
   getSelected(data: Array<Doc>) {
@@ -83,42 +101,49 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
     return html`
       <div class="pallet">
         <div class="menu">
-          <app-storage-opts
-            .loaded=${this.data.loaded}
-            .selected=${this.params.item}
-            .storage=${this.data.storage}
-            .pallet=${this.params.pallet}
-          ></app-storage-opts>
-          <app-extrinsics-opts
-            .loaded=${this.data.loaded}
-            .selected=${this.params.item}
-            .extrinsics=${this.data.extrinsics}
-            .pallet=${this.params.pallet}
-          ></app-extrinsics-opts>
-          <app-const-opts
-            .loaded=${this.data.loaded}
-            .selected=${this.params.item}
-            .const=${this.data.const}
-            .pallet=${this.params.pallet}
-          ></app-const-opts>
+          <app-opts
+            .category=${'Storage'}
+            .data=${this.data.storage}
+            .params=${this.params}
+          ></app-opts>
+          <app-opts
+            .category=${'Extrinsics'}
+            .data=${this.data.extrinsics}
+            .params=${this.params}
+          ></app-opts>
+          <app-opts
+            .category=${'Constants'}
+            .data=${this.data.const}
+            .params=${this.params}
+          ></app-opts>
+          <app-opts
+            .category=${'Errors'}
+            .data=${this.data.errors}
+            .params=${this.params}
+          ></app-opts>
+          <app-opts
+            .category=${'Events'}
+            .data=${this.data.events}
+            .params=${this.params}
+          ></app-opts>
         </div>
         ${choose(
           this.params.itemType,
           [
             [
-              'storages',
+              AssetType.storage,
               () => html`<app-storage
                 .item=${this.getSelected(this.data.storage)}
               ></app-storage>`,
             ],
             [
-              'extrinsics',
+              AssetType.extrinsic,
               () => html`<app-extrinsic
                 .item=${this.getSelected(this.data.extrinsics)}
               ></app-extrinsic>`,
             ],
             [
-              'consts',
+              AssetType.const,
               () =>
                 html`<app-const
                   .item=${this.getSelected(this.data.const)}
