@@ -178,6 +178,14 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
               <span>Const:</span>
               <span class="mono">${this.data.const.length}</span>
             </div>
+            <div>
+              <span>Errors:</span>
+              <span class="mono">${this.data.errors.length}</span>
+            </div>
+            <div>
+              <span>Events:</span>
+              <span class="mono">${this.data.events.length}</span>
+            </div>
           </div>`
         )}
       </div>
