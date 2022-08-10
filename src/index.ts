@@ -43,5 +43,4 @@ export const router = new Router(outlet);
 router.setRoutes(routes);
 
 /* Init */
-//createApi('wss://rpc-01.basilisk.hydradx.io', () => {});
 createApi('wss://rpc.basilisk.cloud', () => {});
