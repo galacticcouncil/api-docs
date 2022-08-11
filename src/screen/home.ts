@@ -25,6 +25,16 @@ export class Home extends LitElement {
 
       .info {
         margin-top: 40px;
+        width: 500px;
+        position: relative;
+      }
+
+      .version {
+        position: absolute;
+        top: 8px;
+        margin-left: 160px;
+        font-size: 10px;
+        opacity: 0.7;
       }
 
       .links {
@@ -45,6 +55,9 @@ export class Home extends LitElement {
           <ui-search .assets=${this.db.state.assets}></ui-search>
           <div class="info">
             <h1>API Doc</h1>
+            <span class="version"
+              >${this.db.state.apiState.systemVersion.split(' ')[0]}</span
+            >
             <div>
               <span>Chain:</span>
               <span class="mono">${this.db.state.apiState.systemChain}</span>
@@ -55,7 +68,10 @@ export class Home extends LitElement {
             </div>
             <div>
               <span>Version:</span>
-              <span class="mono">${this.db.state.apiState.systemVersion}</span>
+              <span class="mono"
+                >${this.db.state.apiState.specName}/${this.db.state.apiState
+                  .specVersion}</span
+              >
             </div>
             <div class="links">
               <div class="goto">

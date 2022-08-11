@@ -145,9 +145,7 @@ export class Navigation extends LitElement {
           </a>
           <div>
             <span class="label">API Doc</span>
-            <span class="chain"
-              >${this.chain}: ${this.version.split(' ')[0]}</span
-            >
+            <span class="chain">${this.chain}: ${this.version}</span>
           </div>
           <span class="grow"></span>
         </div>
@@ -168,7 +166,6 @@ export class Navigation extends LitElement {
               `;
             })}
           </div>
-          <span class="category">RPC Calls</span>
         </div>
       </div>
     `;

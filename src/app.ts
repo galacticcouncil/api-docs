@@ -65,8 +65,10 @@ export class App extends LitElement implements BeforeEnterObserver {
             <ui-navigation
               .params=${this.params}
               .pallets=${this.data.pallets}
-              .chain=${this.db.state.apiState.systemChain}
-              .version=${this.db.state.apiState.systemVersion}
+              .chain=${this.db.state.apiState.systemName}
+              .version=${this.db.state.apiState.specName +
+              '/' +
+              this.db.state.apiState.specVersion}
               @update-header=${this.updateSection}
             ></ui-navigation>
           </nav>
