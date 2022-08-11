@@ -170,24 +170,26 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
             <img src="assets/img/pallet.svg" />
             <h1>${this.params.pallet}</h1>
             <div>
-              <span>Storage:</span>
-              <span class="mono">${this.data.storage.length}</span>
-            </div>
-            <div>
-              <span>Extrinsics:</span>
-              <span class="mono">${this.data.extrinsics.length}</span>
-            </div>
-            <div>
-              <span>Constants:</span>
-              <span class="mono">${this.data.const.length}</span>
-            </div>
-            <div>
-              <span>Events:</span>
-              <span class="mono">${this.data.events.length}</span>
-            </div>
-            <div>
-              <span>Errors:</span>
-              <span class="mono">${this.data.errors.length}</span>
+              <div>
+                <span>Storage:</span>
+                <span class="mono">${this.data.storage.length}</span>
+              </div>
+              <div>
+                <span>Extrinsics:</span>
+                <span class="mono">${this.data.extrinsics.length}</span>
+              </div>
+              <div>
+                <span>Constants:</span>
+                <span class="mono">${this.data.const.length}</span>
+              </div>
+              <div>
+                <span>Events:</span>
+                <span class="mono">${this.data.events.length}</span>
+              </div>
+              <div>
+                <span>Errors:</span>
+                <span class="mono">${this.data.errors.length}</span>
+              </div>
             </div>
           </div>`
         )}

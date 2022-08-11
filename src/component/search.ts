@@ -1,5 +1,5 @@
 import {LitElement, html, css} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {customElement, property, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 import {classMap} from 'lit/directives/class-map.js';
 
@@ -12,6 +12,9 @@ import match from 'autosuggest-highlight/match';
 
 @customElement('ui-search')
 export class Search extends LitElement {
+  @state()
+  private clickAwayListener = null;
+
   @property({attribute: false})
   assets = [];
 
@@ -29,14 +32,6 @@ export class Search extends LitElement {
         border: 2px solid var(--color-alternative);
         border-radius: 8px;
       }
-
-      /* .search:hover {
-        border: 2px solid var(--color-secondary);
-      }
-
-      .search:focus {
-        border: 2px solid var(--color-secondary);
-      } */
 
       .bar {
         padding: 5px 8px;
@@ -107,8 +102,19 @@ export class Search extends LitElement {
     `,
   ];
 
-  handleClick() {
-    this.shadowRoot.getElementById('search').focus;
+  async firstUpdated() {
+    var element = this.shadowRoot.getElementById('search');
+    this.clickAwayListener = document.addEventListener('click', (event) => {
+      const isClickInside = element.contains(event.target);
+      if (!isClickInside) {
+        this.value = '';
+      }
+    });
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    document.removeEventListener('click', this.clickAwayListener);
   }
 
   onChange(e: any) {
@@ -117,7 +123,10 @@ export class Search extends LitElement {
 
   filterAssets(assets: Array<AssetDoc>, query: string) {
     return assets.filter(
-      (a) => a.name.includes(query) || a.doc.includes(query)
+      (a) =>
+        a.name.toLowerCase().includes(query.toLowerCase()) ||
+        a.doc.toLowerCase().includes(query.toLowerCase()) ||
+        a.section.toLowerCase().includes(query.toLowerCase())
     );
   }
 
@@ -127,7 +136,7 @@ export class Search extends LitElement {
       search: true,
     };
     return html`
-      <div id="search" class=${classMap(search)} @click=${this.handleClick}>
+      <div id="search" class=${classMap(search)}>
         <div class="bar">
           <img height="24" width="24" src="assets/img/icon/search.svg" />
           <input
@@ -146,22 +155,24 @@ export class Search extends LitElement {
               <div class="result-items">
                 ${this.filterAssets(this.assets, this.value).map(
                   (item: AssetDoc) => {
-                    const matches = match(item.name, this.value);
-                    const parts = parse(item.name, matches);
+                    const nameMatches = match(item.name, this.value);
+                    const nameParts = parse(item.name, nameMatches);
                     return html`
                       <a
                         href="pallets/${item.section}/${item.type}/${item.name}"
                       >
-                        ${parts.map((part) => {
-                          const partClass = {
-                            highlighted: part.highlight,
-                          };
-                          return html`
-                            <span class=${classMap(partClass)}>
-                              ${part.text}
-                            </span>
-                          `;
-                        })}
+                        ${nameParts.map(
+                          (part: {highlight: boolean; text: string}) => {
+                            const partClass = {
+                              highlighted: part.highlight,
+                            };
+                            return html`
+                              <span class=${classMap(partClass)}>
+                                ${part.text}
+                              </span>
+                            `;
+                          }
+                        )}
                         <span class="type"> ${item.type} </span>
                         <span class="grow"> </span>
                         <span class="section"> ${item.section}</span>

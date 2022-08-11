@@ -1,5 +1,5 @@
 import {LitElement, html, css} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 
 import {DatabaseController} from '../db.ctrl';
@@ -15,6 +15,9 @@ export class Header extends LitElement {
     locationCursor,
     this.localName
   );
+
+  @property({attribute: false})
+  assets = [];
 
   static styles = [
     baseStyles,
@@ -32,8 +35,12 @@ export class Header extends LitElement {
     return html`
       <div class="header">
         ${when(
-          this.db.state.params,
-          () => html` <h3>${this.db.state.params.pallet}</h3>`
+          this.db.state.pathname !== '/',
+          () => html`
+            <h3>${this.db.state.params.pallet}</h3>
+            <span class="grow"></span>
+            <ui-search .assets=${this.assets}></ui-search>
+          `
         )}
       </div>
     `;

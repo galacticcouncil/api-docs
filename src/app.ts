@@ -1,7 +1,6 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
-import {BeforeEnterObserver, RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from './db.ctrl';
 import {apiCursor, Api} from './db';
@@ -9,13 +8,11 @@ import {listPallets} from './polka/pallet';
 
 import './component/navigation';
 import './component/header';
+import './component/search';
 
 @customElement('app-root')
-export class App extends LitElement implements BeforeEnterObserver {
+export class App extends LitElement {
   private db = new DatabaseController<Api>(this, apiCursor, this.localName);
-
-  @property({attribute: false})
-  params = null;
 
   @property({attribute: false})
   data = {pallets: [], loaded: false};
@@ -30,10 +27,6 @@ export class App extends LitElement implements BeforeEnterObserver {
       margin-left: var(--drawer-width);
     }
   `;
-
-  async onBeforeEnter(location: RouterLocation) {
-    this.params = location.params;
-  }
 
   async updated() {
     if (this.db.state && !this.data.loaded) {
@@ -53,13 +46,10 @@ export class App extends LitElement implements BeforeEnterObserver {
         this.db.state,
         () => html`
           <header>
-            <ui-header
-              .params=${this.params}
-            ></ui-header>
+            <ui-header .assets=${this.db.state.assets}></ui-header>
           </header>
           <nav>
             <ui-navigation
-              .params=${this.params}
               .pallets=${this.data.pallets}
               .chain=${this.db.state.apiState.systemName}
               .version=${this.db.state.apiState.specName +
