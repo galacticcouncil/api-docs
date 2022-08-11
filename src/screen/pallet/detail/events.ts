@@ -33,8 +33,14 @@ export class EventDetail extends LitElement {
   }
 
   getTypes(): String {
-    const fields = this.itemMetadata.fields;
-    return fields.map((f) => f.name).join(', ');
+    const fields = this.itemMetadata.fields.toHuman();
+    if (fields.length === 0) {
+      return '';
+    }
+    const isStruct = fields.find(f => f.name);
+    return isStruct ?
+        '{\n' + fields.map(f => `  ${f.name}: ${f.typeName}`).join(',\n') + '\n}' :
+        '[ ' + fields.map(f => f.typeName).join(', ') + ' ]';
   }
 
   render() {
@@ -52,7 +58,7 @@ export class EventDetail extends LitElement {
               })}
             </div>
             <div class="signature">
-              <pre>${this.item.name}(${this.getTypes()})</pre>
+              <pre>${this.item.name} ${this.getTypes()}</pre>
               <span>Signature</span>
             </div>
           </div>
