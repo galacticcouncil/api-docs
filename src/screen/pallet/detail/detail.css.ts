@@ -12,6 +12,11 @@ export const detailStyles = css`
     margin-top: 24px;
   }
 
+  .section {
+    opacity: 0.5;
+    font-weight: 600;
+  }
+
   .doc li {
     display: list-item;
     text-align: -webkit-match-parent;

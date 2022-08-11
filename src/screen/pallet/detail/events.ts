@@ -43,6 +43,7 @@ export class EventDetail extends LitElement {
       () =>
         html`
           <div class="detail">
+            <span class="section">${this.item.section}</span>
             <h1>${this.item.name}</h1>
             <div class="doc">
               ${this.itemMetadata.docs.map((doc: string) => {

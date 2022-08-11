@@ -36,7 +36,10 @@ export class ConstDetail extends LitElement {
   }
 
   getType(): String {
-    return lookupConstantTypeLegacy(apiCursor.deref().metadata, this.itemMetadata);
+    return lookupConstantTypeLegacy(
+      apiCursor.deref().metadata,
+      this.itemMetadata
+    );
   }
 
   render() {
@@ -44,6 +47,7 @@ export class ConstDetail extends LitElement {
       this.itemMetadata,
       () => html`
         <div class="detail">
+          <span class="section">${this.item.section}</span>
           <h1>${this.item.name}</h1>
           <div class="doc">
             ${this.itemMetadata.docs.map((doc: string) => {
