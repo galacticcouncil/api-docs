@@ -42,7 +42,7 @@ export class ExtrinsicDetail extends LitElement {
       this.itemMetadata,
       () => html`
         <div class="detail">
-          <span class="section">${this.item.section}</span>
+          <span class="section">Extrinsic</span>
           <h1>${this.item.name}</h1>
           <div class="doc">
             ${this.itemMetadata.docs.map((doc: string) => {
