@@ -168,7 +168,7 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
           ],
           () => html`<div class="info">
             <img src="assets/img/pallet.svg" />
-            <h1>${this.params.pallet}</h1>
+            <h1>${this.params.pallet} Pallet</h1>
             <div>
               <div>
                 <span>Storage:</span>
