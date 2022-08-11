@@ -30,28 +30,34 @@ export class ConstOpts extends LitElement {
         color: var(--color-main);
         background-color: #fff;
       }
+
       .category {
         top: 0;
       }
+
       .items {
         display: flex;
         flex-direction: column;
       }
+
       .items > a {
         padding: 4px 16px 4px 24px;
         cursor: pointer;
         transition: all 0.2s;
       }
+
       .items > a.selected {
         background-color: var(--color-secondary);
         color: #fff;
         font-weight: 600;
       }
+
       .items > a.selected:hover {
         background-color: var(--color-secondary);
       }
+
       .items > a:hover {
-        background-color: var(--color-action-hover);
+        background-color: var(--color-action__hover);
       }
     `,
   ];

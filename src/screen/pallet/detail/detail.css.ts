@@ -20,8 +20,8 @@ export const detailStyles = css`
   .doc ul {
     display: block;
     list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
+    margin-block-start: 8px;
+    margin-block-end: 8px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 40px;
@@ -29,6 +29,20 @@ export const detailStyles = css`
 
   .doc p {
     display: block;
+  }
+
+  .doc h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    display: block;
+    font-size: 14px;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
   }
 
   .signature {
@@ -42,7 +56,7 @@ export const detailStyles = css`
   .signature > span {
     position: absolute;
     top: -8px;
-    padding: 0 5px;
+    padding: 0 8px;
     border-radius: 8px;
     font-size: 10px;
     background-color: var(--color-secondary);

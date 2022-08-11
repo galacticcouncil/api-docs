@@ -56,19 +56,19 @@ export class App extends LitElement implements BeforeEnterObserver {
         this.db.state.ready,
         () => html`
           <header>
-            <app-header
+            <ui-header
               .params=${this.params}
               @update-header=${this.updateSection}
-            ></app-header>
+            ></ui-header>
           </header>
           <nav>
-            <app-navigation
+            <ui-navigation
               .params=${this.params}
               .pallets=${this.data.pallets}
               .chain=${this.db.state.apiState.systemChain}
               .version=${this.db.state.apiState.systemVersion}
               @update-header=${this.updateSection}
-            ></app-navigation>
+            ></ui-navigation>
           </nav>
           <main>
             <slot></slot>

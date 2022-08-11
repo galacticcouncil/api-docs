@@ -40,21 +40,22 @@ export class EventDetail extends LitElement {
   render() {
     return html` ${when(
       this.itemMetadata,
-      () => html`
-        <div class="detail">
-          <h1>${this.item.name}</h1>
-          <div class="doc">
-            ${this.itemMetadata.docs.map((doc: string) => {
-              const ht = converter.makeHtml(doc);
-              return html` ${unsafeHTML(ht)}`;
-            })}
+      () =>
+        html`
+          <div class="detail">
+            <h1>${this.item.name}</h1>
+            <div class="doc">
+              ${this.itemMetadata.docs.map((doc: string) => {
+                const ht = converter.makeHtml(doc);
+                return html` ${unsafeHTML(ht)}`;
+              })}
+            </div>
+            <div class="signature">
+              <pre>${this.item.name}(${this.getTypes()})</pre>
+              <span>Signature</span>
+            </div>
           </div>
-          <div class="signature">
-            <pre>${this.item.name}(${this.getTypes()})</pre>
-            <span>Signature</span>
-          </div>
-        </div>
-      `
+        `
     )}`;
   }
 }

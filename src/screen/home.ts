@@ -6,6 +6,8 @@ import {DatabaseController} from '../db.ctrl';
 
 import {baseStyles} from '../base.css';
 
+import '../component/search';
+
 @customElement('app-home')
 export class Home extends LitElement {
   private db = new DatabaseController(this, this.localName);
@@ -14,11 +16,15 @@ export class Home extends LitElement {
     baseStyles,
     css`
       .dashboard {
-        height: calc(100vh - var(--toolbar-height));
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding-top: 150px;
+      }
+
+      .info {
+        margin-top: 40px;
       }
 
       .links {
@@ -36,6 +42,7 @@ export class Home extends LitElement {
       this.db.state.ready,
       () => html`
         <div class="dashboard">
+          <ui-search .assets=${this.db.state.assets}></ui-search>
           <div class="info">
             <h1>API Doc</h1>
             <div>

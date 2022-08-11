@@ -4,9 +4,9 @@ import {when} from 'lit/directives/when.js';
 
 import {baseStyles} from '../base.css';
 
-@customElement('app-header')
+@customElement('ui-header')
 export class Header extends LitElement {
-  @property({type: String})
+  @property({attribute: false})
   params = null;
 
   static styles = [
@@ -18,24 +18,13 @@ export class Header extends LitElement {
         height: var(--toolbar-height);
         padding: 0 16px;
       }
-
-      .breadcrumbs {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
     `,
   ];
 
   render() {
     return html`
       <div class="header">
-        ${when(
-          this.params,
-          () => html` <div class="breadcrumbs">
-            <h4>${this.params.pallet}</h4>
-          </div>`
-        )}
+        ${when(this.params, () => html` <h3>${this.params.pallet}</h3>`)}
       </div>
     `;
   }

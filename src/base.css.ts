@@ -193,7 +193,6 @@ export const baseStyles = css`
 
   h3 {
     font-size: 20px;
-    margin-bottom: 40px;
   }
 
   /* Scrolls */
@@ -245,5 +244,31 @@ export const baseStyles = css`
 
   .goto:hover > a > .goto-img {
     background-image: url(assets/img/icon/chevron-right-alt.svg);
+  }
+
+  .form-field__input,
+  .form-field__select,
+  .form-field__textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    display: block;
+    background: none;
+    border: 0;
+    outline: none;
+    transition: box-shadow 0.25s ease;
+    border-radius: 0;
+    padding: 6px 0;
+    color: #404040;
+    box-shadow: 0 1px 0 #dedede;
+    font-size: 19px;
+    line-height: 1.5;
+  }
+
+  .form-field__input:focus,
+  .form-field__select:focus,
+  .form-field__textarea:focus {
+    box-shadow: 0 3px 0 #000;
   }
 `;

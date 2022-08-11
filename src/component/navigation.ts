@@ -6,7 +6,7 @@ import {baseStyles} from '../base.css';
 
 import {PalletDoc} from '../polka/pallet';
 
-@customElement('app-navigation')
+@customElement('ui-navigation')
 export class Navigation extends LitElement {
   @property({attribute: false})
   params = null;
