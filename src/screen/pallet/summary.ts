@@ -57,6 +57,7 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
         max-width: 750px;
         display: flex;
         flex-direction: column;
+        align-items: center;
       }
     `,
   ];
@@ -115,15 +116,15 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
             .category=${'Constants'}
             .data=${this.data.const}
             .params=${this.params}
+          ></app-opts> 
+          <app-opts
+            .category=${'Events'}
+            .data=${this.data.events}
+            .params=${this.params}
           ></app-opts>
           <app-opts
             .category=${'Errors'}
             .data=${this.data.errors}
-            .params=${this.params}
-          ></app-opts>
-          <app-opts
-            .category=${'Events'}
-            .data=${this.data.events}
             .params=${this.params}
           ></app-opts>
         </div>
@@ -150,21 +151,22 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
                 ></app-const>`,
             ],
             [
-              AssetType.error,
-              () =>
-                html`<app-error
-                  .item=${this.getSelected(this.data.errors)}
-                ></app-error>`,
-            ],
-            [
               AssetType.event,
               () =>
                 html`<app-event
                   .item=${this.getSelected(this.data.events)}
                 ></app-event>`,
             ],
+            [
+              AssetType.error,
+              () =>
+                html`<app-error
+                  .item=${this.getSelected(this.data.errors)}
+                ></app-error>`,
+            ],
           ],
           () => html`<div class="info">
+            <img src="assets/img/pallet.svg" />
             <h1>${this.params.pallet}</h1>
             <div>
               <span>Storage:</span>
@@ -175,16 +177,16 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
               <span class="mono">${this.data.extrinsics.length}</span>
             </div>
             <div>
-              <span>Const:</span>
+              <span>Constants:</span>
               <span class="mono">${this.data.const.length}</span>
-            </div>
-            <div>
-              <span>Errors:</span>
-              <span class="mono">${this.data.errors.length}</span>
             </div>
             <div>
               <span>Events:</span>
               <span class="mono">${this.data.events.length}</span>
+            </div>
+            <div>
+              <span>Errors:</span>
+              <span class="mono">${this.data.errors.length}</span>
             </div>
           </div>`
         )}
