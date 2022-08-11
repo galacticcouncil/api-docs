@@ -4,6 +4,7 @@ import {choose} from 'lit/directives/choose.js';
 import {BeforeEnterObserver, RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from '../../db.ctrl';
+import {apiCursor, Api} from '../../db';
 import {AssetDoc, AssetType} from '../../polka/assets';
 
 import type {Doc} from '../../polka/types';
@@ -19,7 +20,7 @@ import './detail/events';
 
 @customElement('app-pallet')
 export class Pallet extends LitElement implements BeforeEnterObserver {
-  private db = new DatabaseController(this, this.localName);
+  private db = new DatabaseController<Api>(this, apiCursor, this.localName);
 
   @state()
   params = null;
@@ -67,7 +68,7 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
   }
 
   async updated() {
-    if (this.db.state.ready && !this.data.loaded) {
+    if (this.db.state && !this.data.loaded) {
       const assets = this.db.state.assets;
       const storage = this.filterAssets(assets, AssetType.storage);
       const extrinsics = this.filterAssets(assets, AssetType.extrinsic);
@@ -116,7 +117,7 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
             .category=${'Constants'}
             .data=${this.data.const}
             .params=${this.params}
-          ></app-opts> 
+          ></app-opts>
           <app-opts
             .category=${'Events'}
             .data=${this.data.events}

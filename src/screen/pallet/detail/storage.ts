@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
-import {db} from '../../../db';
+import {apiCursor} from '../../../db';
 import {
   lookupStorageMetadata,
   lookupStorageOutputLegacy,
@@ -29,7 +29,7 @@ export class StorageDetail extends LitElement {
   async updated() {
     if (this.item && this.itemMetadata == null) {
       this.itemMetadata = lookupStorageMetadata(
-        db.deref().metadata,
+        apiCursor.deref().metadata,
         this.item.section,
         this.item.name
       );
@@ -37,11 +37,11 @@ export class StorageDetail extends LitElement {
   }
 
   getInput(): String {
-    return lookupStorageInputLegacy(db.deref().metadata, this.itemMetadata);
+    return lookupStorageInputLegacy(apiCursor.deref().metadata, this.itemMetadata);
   }
 
   getOutput(): String {
-    return lookupStorageOutputLegacy(db.deref().metadata, this.itemMetadata);
+    return lookupStorageOutputLegacy(apiCursor.deref().metadata, this.itemMetadata);
   }
 
   render() {

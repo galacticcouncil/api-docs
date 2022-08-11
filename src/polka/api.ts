@@ -2,7 +2,7 @@ import {ApiPromise, WsProvider} from '@polkadot/api';
 import type {ChainType} from '@polkadot/types/interfaces';
 import type {ApiState} from './types';
 
-import {db} from './../db';
+import {apiCursor} from './../db';
 import {listAssets} from './assets';
 
 interface ChainData {
@@ -72,12 +72,11 @@ export async function createApi(
           .then((apiState: ApiState) => {
             const metadata = apiState.api.runtimeMetadata.asLatest;
             const assets = listAssets(metadata);
-            db.reset({
+            apiCursor.reset({
               apiState: apiState,
-              ready: true,
+              node: apiUrl,
               metadata: metadata,
               assets: assets,
-              node: apiUrl
             });
           })
           .catch(onError);

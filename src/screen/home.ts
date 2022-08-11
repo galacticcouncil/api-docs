@@ -3,6 +3,7 @@ import {customElement} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 
 import {DatabaseController} from '../db.ctrl';
+import {apiCursor, Api} from '../db';
 
 import {baseStyles} from '../base.css';
 
@@ -10,7 +11,7 @@ import '../component/search';
 
 @customElement('app-home')
 export class Home extends LitElement {
-  private db = new DatabaseController(this, this.localName);
+  private db = new DatabaseController<Api>(this, apiCursor, this.localName);
 
   static styles = [
     baseStyles,
@@ -34,7 +35,7 @@ export class Home extends LitElement {
         top: 8px;
         margin-left: 160px;
         font-size: 10px;
-        opacity: 0.7;
+        opacity: 0.8;
       }
 
       .links {
@@ -49,7 +50,7 @@ export class Home extends LitElement {
 
   render() {
     return html` ${when(
-      this.db.state.ready,
+      this.db.state,
       () => html`
         <div class="dashboard">
           <ui-search .assets=${this.db.state.assets}></ui-search>

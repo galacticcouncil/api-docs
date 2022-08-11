@@ -1,28 +1,37 @@
 import {ReactiveController, ReactiveControllerHost} from 'lit';
+import type {Cursor} from '@thi.ng/atom/cursor';
 
-import {db, State} from './db';
-
-export class DatabaseController implements ReactiveController {
+export class DatabaseController<T> implements ReactiveController {
   private readonly host: ReactiveControllerHost;
   private watchId: string;
+  private cursor: Cursor<T>;
 
-  state: State = null;
+  state: T = null;
 
-  constructor(host: ReactiveControllerHost, watchId: string) {
-    this.state = db.deref();
+  constructor(
+    host: ReactiveControllerHost,
+    cursor: Cursor<T>,
+    watchId: string
+  ) {
+    this.state = cursor.deref();
     this.host = host;
+    this.cursor = cursor;
     this.watchId = watchId;
     host.addController(this);
   }
 
+  setKeyValue(key: T): void {
+    this.state = key;
+  }
+
   hostConnected() {
-    db.addWatch(this.watchId, (id, prev, curr) => {
+    this.cursor.addWatch(this.watchId, (id, prev, curr) => {
       this.state = curr;
       this.host.requestUpdate();
     });
   }
 
   hostDisconnected() {
-    db.removeWatch(this.watchId);
+    this.cursor.removeWatch(this.watchId);
   }
 }

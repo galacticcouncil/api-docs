@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
-import {db} from '../../../db';
+import {apiCursor} from '../../../db';
 import {
   lookupConstantsMetadata,
   lookupConstantTypeLegacy,
@@ -28,7 +28,7 @@ export class ConstDetail extends LitElement {
   async updated() {
     if (this.item && this.itemMetadata == null) {
       this.itemMetadata = lookupConstantsMetadata(
-        db.deref().metadata,
+        apiCursor.deref().metadata,
         this.item.section,
         this.item.name
       );
@@ -36,7 +36,7 @@ export class ConstDetail extends LitElement {
   }
 
   getType(): String {
-    return lookupConstantTypeLegacy(db.deref().metadata, this.itemMetadata);
+    return lookupConstantTypeLegacy(apiCursor.deref().metadata, this.itemMetadata);
   }
 
   render() {

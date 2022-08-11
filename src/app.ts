@@ -4,6 +4,7 @@ import {when} from 'lit/directives/when.js';
 import {BeforeEnterObserver, RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from './db.ctrl';
+import {apiCursor, Api} from './db';
 import {listPallets} from './polka/pallet';
 
 import './component/navigation';
@@ -11,7 +12,7 @@ import './component/header';
 
 @customElement('app-root')
 export class App extends LitElement implements BeforeEnterObserver {
-  private db = new DatabaseController(this, this.localName);
+  private db = new DatabaseController<Api>(this, apiCursor, this.localName);
 
   @property({attribute: false})
   params = null;
@@ -35,7 +36,7 @@ export class App extends LitElement implements BeforeEnterObserver {
   }
 
   async updated() {
-    if (this.db.state.ready && !this.data.loaded) {
+    if (this.db.state && !this.data.loaded) {
       const metadata = this.db.state.metadata;
       const pallets = listPallets(metadata);
 
@@ -53,7 +54,7 @@ export class App extends LitElement implements BeforeEnterObserver {
   render() {
     return html`
       ${when(
-        this.db.state.ready,
+        this.db.state,
         () => html`
           <header>
             <ui-header

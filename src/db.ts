@@ -1,20 +1,25 @@
 import {defAtom} from '@thi.ng/atom/atom';
+import {defCursor} from '@thi.ng/atom/cursor';
 import type {MetadataLatest} from '@polkadot/types/interfaces/metadata';
 import type {ApiState} from './polka/types';
 import type {AssetDoc} from './polka/assets';
 
-export interface State {
+export interface Api {
   apiState: ApiState;
-  ready: Boolean;
   metadata: MetadataLatest;
   assets: Array<AssetDoc>;
-  node: String;
+  node: string;
+}
+
+export interface State {
+  api: Api;
+  params: any;
 }
 
 export const db = defAtom<State>({
-  apiState: null,
-  ready: false,
-  metadata: null,
-  assets: [],
-  node: null,
+  api: null,
+  params: null,
 });
+
+export const apiCursor = defCursor(db, ['api']);
+export const params = defCursor(db, ['params']);
