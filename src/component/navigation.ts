@@ -142,8 +142,8 @@ export class Navigation extends LitElement {
             <img src="assets/img/logo/basilisk.svg" />
           </a>
           <div>
-            <span class="label">API Doc</span>
-            <span class="chain">${this.chain}: ${this.version}</span>
+            <span class="label">${this.chain} API</span>
+            <span class="chain">${this.version}</span>
           </div>
           <span class="grow"></span>
         </div>

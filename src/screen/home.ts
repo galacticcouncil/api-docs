@@ -64,15 +64,15 @@ export class Home extends LitElement {
               <span class="mono">${this.db.state.apiState.systemChain}</span>
             </div>
             <div>
-              <span>Name:</span>
-              <span class="mono">${this.db.state.apiState.systemName}</span>
-            </div>
-            <div>
               <span>Version:</span>
               <span class="mono"
                 >${this.db.state.apiState.specName}/${this.db.state.apiState
                   .specVersion}</span
               >
+            </div>
+            <div>
+              <span>RPC:</span>
+              <span class="mono">${this.db.state.node}</span>
             </div>
             <div class="links">
               <div class="goto">
