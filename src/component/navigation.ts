@@ -44,7 +44,6 @@ export class Navigation extends LitElement {
         min-height: var(--toolbar-height);
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 0 16px;
         position: sticky;
         top: 0;
@@ -56,15 +55,25 @@ export class Navigation extends LitElement {
       .toolbar img {
         height: 34px;
       }
+
       .toolbar div {
+        margin-left: 8px;
         display: flex;
         flex-direction: column;
-        text-align: right;
       }
 
       .toolbar span {
+        line-height: normal;
+      }
+
+      .toolbar .chain {
         font-size: 12px;
         line-height: 1.2;
+      }
+
+      .toolbar .label {
+        font-weight: 600;
+        font-size: 14px;
       }
 
       .menu {
@@ -135,9 +144,12 @@ export class Navigation extends LitElement {
             <img src="assets/img/logo/basilisk.svg" />
           </a>
           <div>
-            <span>${this.chain}</span>
-            <span>${this.version.split(' ')[0]}</span>
+            <span class="label">API Doc</span>
+            <span class="chain"
+              >${this.chain}: ${this.version.split(' ')[0]}</span
+            >
           </div>
+          <span class="grow"></span>
         </div>
         <div class="menu">
           <span class="category">Pallets</span>
