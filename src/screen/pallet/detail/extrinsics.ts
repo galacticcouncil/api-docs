@@ -34,7 +34,7 @@ export class ExtrinsicDetail extends LitElement {
 
   getInput(): String {
     const fields = this.itemMetadata.fields;
-    return fields.map((f) => f.name).join(', ');
+    return '(\n' + fields.map(f => `  ${f.name}: ${f.typeName}`).join(',\n') + '\n)';
   }
 
   render() {
@@ -51,7 +51,7 @@ export class ExtrinsicDetail extends LitElement {
             })}
           </div>
           <div class="signature">
-            <pre>${this.item.name}(${this.getInput()})</pre>
+            <pre>${this.item.name}${this.getInput()}</pre>
             <span>Signature</span>
           </div>
         </div>
