@@ -19,7 +19,7 @@ export class Search extends LitElement {
   assets = [];
 
   @property({type: String})
-  value = '';
+  query = '';
 
   static styles = [
     baseStyles,
@@ -107,7 +107,7 @@ export class Search extends LitElement {
     this.clickAwayListener = document.addEventListener('click', (event) => {
       const isClickInside = element.contains(event.target);
       if (!isClickInside) {
-        this.value = '';
+        this.query = '';
       }
     });
   }
@@ -117,8 +117,8 @@ export class Search extends LitElement {
     document.removeEventListener('click', this.clickAwayListener);
   }
 
-  onChange(e: any) {
-    this.value = e.target.value;
+  onInputChange(e: any) {
+    this.query = e.target.value;
   }
 
   filterAssets(assets: Array<AssetDoc>, query: string) {
@@ -132,7 +132,7 @@ export class Search extends LitElement {
 
   render() {
     const search = {
-      open: this.value && this.value.length > 2,
+      open: this.query && this.query.length > 2,
       search: true,
     };
     return html`
@@ -142,20 +142,20 @@ export class Search extends LitElement {
           <input
             name="name"
             type="text"
-            .value="${this.value}"
-            @input=${this.onChange}
+            .value="${this.query}"
+            @input=${this.onInputChange}
             placeholder="Search the assets"
             class="form-field__input"
           />
         </div>
         ${when(
-          this.value && this.value.length > 2,
+          this.query && this.query.length > 2,
           () => html`
             <div class="result">
               <div class="result-items">
-                ${this.filterAssets(this.assets, this.value).map(
+                ${this.filterAssets(this.assets, this.query).map(
                   (item: AssetDoc) => {
-                    const nameMatches = match(item.name, this.value);
+                    const nameMatches = match(item.name, this.query);
                     const nameParts = parse(item.name, nameMatches);
                     return html`
                       <a
