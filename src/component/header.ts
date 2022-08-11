@@ -35,7 +35,7 @@ export class Header extends LitElement {
     return html`
       <div class="header">
         ${when(
-          this.db.state.pathname !== '/',
+          this.db.state.params.pallet,
           () => html`
             <h3>${this.db.state.params.pallet}</h3>
             <span class="grow"></span>
