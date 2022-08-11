@@ -2,14 +2,21 @@ import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {classMap} from 'lit/directives/class-map.js';
 
+import {DatabaseController} from '../db.ctrl';
+import {locationCursor} from '../db';
+import {RouterLocation} from '@vaadin/router';
+
 import {baseStyles} from '../base.css';
 
 import {PalletDoc} from '../polka/pallet';
 
 @customElement('ui-navigation')
 export class Navigation extends LitElement {
-  @property({attribute: false})
-  params = null;
+  private db = new DatabaseController<RouterLocation>(
+    this,
+    locationCursor,
+    this.localName
+  );
 
   @property({attribute: false})
   pallets = [];
@@ -127,20 +134,11 @@ export class Navigation extends LitElement {
     `,
   ];
 
-  updateHeader(params: any) {
-    const options = {
-      bubbles: true,
-      composed: true,
-      detail: params,
-    };
-    this.dispatchEvent(new CustomEvent('update-header', options));
-  }
-
   render() {
     return html`
       <div class="navigation">
         <div class="toolbar">
-          <a href="" @click=${() => this.updateHeader(null)}>
+          <a href="">
             <img src="assets/img/logo/basilisk.svg" />
           </a>
           <div>
@@ -154,13 +152,12 @@ export class Navigation extends LitElement {
           <div class="items">
             ${this.pallets.map((item: PalletDoc) => {
               const itemClasses = {
-                selected: this.params && this.params.pallet === item.name,
+                selected:
+                  this.db.state.params &&
+                  this.db.state.params.pallet === item.name,
               };
               return html`
-                <a
-                  class=${classMap(itemClasses)}
-                  href="pallets/${item.name}"
-                  @click=${() => this.updateHeader({pallet: item.name})}
+                <a class=${classMap(itemClasses)} href="pallets/${item.name}"
                   ><span> ${item.name} </span>
                 </a>
               `;

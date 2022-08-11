@@ -1,13 +1,20 @@
 import {LitElement, html, css} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {customElement} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
+
+import {DatabaseController} from '../db.ctrl';
+import {locationCursor} from '../db';
+import {RouterLocation} from '@vaadin/router';
 
 import {baseStyles} from '../base.css';
 
 @customElement('ui-header')
 export class Header extends LitElement {
-  @property({attribute: false})
-  params = null;
+  private db = new DatabaseController<RouterLocation>(
+    this,
+    locationCursor,
+    this.localName
+  );
 
   static styles = [
     baseStyles,
@@ -24,7 +31,10 @@ export class Header extends LitElement {
   render() {
     return html`
       <div class="header">
-        ${when(this.params, () => html` <h3>${this.params.pallet}</h3>`)}
+        ${when(
+          this.db.state.params,
+          () => html` <h3>${this.db.state.params.pallet}</h3>`
+        )}
       </div>
     `;
   }

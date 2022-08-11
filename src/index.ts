@@ -1,6 +1,8 @@
 import {Router} from '@vaadin/router';
 import {createApi} from './polka/api';
 
+import {locationCursor} from './db';
+
 /* Screens */
 import './screen/home';
 import './screen/pallet/summary';
@@ -41,6 +43,10 @@ const routes = [
 const outlet = document.getElementById('app');
 export const router = new Router(outlet);
 router.setRoutes(routes);
+
+window.addEventListener('vaadin-router-location-changed', (e) => {
+  locationCursor.reset(e.detail.location);
+});
 
 /* Init */
 createApi('wss://rpc.basilisk.cloud', () => {});

@@ -1,6 +1,7 @@
 import {defAtom} from '@thi.ng/atom/atom';
 import {defCursor} from '@thi.ng/atom/cursor';
 import type {MetadataLatest} from '@polkadot/types/interfaces/metadata';
+import type {RouterLocation} from '@vaadin/router';
 import type {ApiState} from './polka/types';
 import type {AssetDoc} from './polka/assets';
 
@@ -13,13 +14,13 @@ export interface Api {
 
 export interface State {
   api: Api;
-  params: any;
+  location: RouterLocation;
 }
 
 export const db = defAtom<State>({
   api: null,
-  params: null,
+  location: null,
 });
 
 export const apiCursor = defCursor(db, ['api']);
-export const params = defCursor(db, ['params']);
+export const locationCursor = defCursor(db, ['location']);

@@ -47,10 +47,6 @@ export class App extends LitElement implements BeforeEnterObserver {
     }
   }
 
-  updateSection(e: CustomEvent) {
-    this.params = e.detail;
-  }
-
   render() {
     return html`
       ${when(
@@ -59,7 +55,6 @@ export class App extends LitElement implements BeforeEnterObserver {
           <header>
             <ui-header
               .params=${this.params}
-              @update-header=${this.updateSection}
             ></ui-header>
           </header>
           <nav>
@@ -70,7 +65,6 @@ export class App extends LitElement implements BeforeEnterObserver {
               .version=${this.db.state.apiState.specName +
               '/' +
               this.db.state.apiState.specVersion}
-              @update-header=${this.updateSection}
             ></ui-navigation>
           </nav>
           <main>
