@@ -53,7 +53,7 @@ export const detailStyles = css`
   .signature {
     background-color: var(--color-alternative);
     font-size: 15px;
-    padding: 8px;
+    padding: 12px;
     border-radius: 8px;
     position: relative;
   }
@@ -63,8 +63,9 @@ export const detailStyles = css`
     top: -8px;
     padding: 0 8px;
     border-radius: 8px;
-    font-size: 10px;
+    color: white;
+    font-size: 13px;
     background-color: var(--color-secondary);
-    font-weight: 600;
+    font-weight: 550;
   }
 `;
