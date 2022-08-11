@@ -15,7 +15,7 @@ export class App extends LitElement {
   private db = new DatabaseController<Api>(this, apiCursor, this.localName);
 
   @property({attribute: false})
-  data = {pallets: [], loaded: false};
+  data = {pallets: [], chain: null, version: null, loaded: false};
 
   static styles = css`
     header {
@@ -31,11 +31,15 @@ export class App extends LitElement {
   async updated() {
     if (this.db.state && !this.data.loaded) {
       const metadata = this.db.state.metadata;
+      const apiState = this.db.state.apiState;
       const pallets = listPallets(metadata);
+      const version = apiState.specName + '/' + apiState.specVersion;
 
       this.data = {
         pallets: pallets,
         loaded: true,
+        chain: apiState.systemName,
+        version: version,
       };
     }
   }
@@ -49,13 +53,7 @@ export class App extends LitElement {
             <ui-header .assets=${this.db.state.assets}></ui-header>
           </header>
           <nav>
-            <ui-navigation
-              .pallets=${this.data.pallets}
-              .chain=${this.db.state.apiState.systemName}
-              .version=${this.db.state.apiState.specName +
-              '/' +
-              this.db.state.apiState.specVersion}
-            ></ui-navigation>
+            <ui-navigation .data=${this.data}></ui-navigation>
           </nav>
           <main>
             <slot></slot>

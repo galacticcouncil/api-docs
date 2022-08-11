@@ -19,13 +19,7 @@ export class Navigation extends LitElement {
   );
 
   @property({attribute: false})
-  pallets = [];
-
-  @property({attribute: false})
-  chain = null;
-
-  @property({attribute: false})
-  version = null;
+  data = {pallets: [], chain: null, version: null, loaded: false};
 
   static styles = [
     baseStyles,
@@ -142,15 +136,15 @@ export class Navigation extends LitElement {
             <img src="assets/img/logo/basilisk.svg" />
           </a>
           <div>
-            <span class="label">${this.chain} API</span>
-            <span class="chain">${this.version}</span>
+            <span class="label">${this.data.chain} API</span>
+            <span class="chain">${this.data.version}</span>
           </div>
           <span class="grow"></span>
         </div>
         <div class="menu">
           <span class="category">Pallets</span>
           <div class="items">
-            ${this.pallets.map((item: PalletDoc) => {
+            ${this.data.pallets.map((item: PalletDoc) => {
               const itemClasses = {
                 selected:
                   this.db.state.params &&
