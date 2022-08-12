@@ -105,7 +105,7 @@ export class Search extends LitElement {
   async firstUpdated() {
     var element = this.shadowRoot.getElementById('search');
     this.clickAwayListener = document.addEventListener('click', (event) => {
-      const isClickInside = element.contains(event.target);
+      const isClickInside = element.contains(event.target as Element);
       if (!isClickInside) {
         this.query = '';
       }
