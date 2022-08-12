@@ -51,10 +51,10 @@ export const detailStyles = css`
   }
 
   .signature {
-    background-color: var(--color-alternative);
+    background-color: #f6f8fa;
     font-size: 15px;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 4px;
     position: relative;
   }
 
@@ -62,7 +62,7 @@ export const detailStyles = css`
     position: absolute;
     top: -8px;
     padding: 0 8px;
-    border-radius: 8px;
+    border-radius: 2px;
     color: white;
     font-size: 13px;
     background-color: var(--color-secondary);

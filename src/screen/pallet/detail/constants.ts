@@ -13,7 +13,6 @@ import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
 import showdown from 'showdown';
-//const converter = new showdown.Converter();
 
 @customElement('app-const')
 export class ConstDetail extends LitElement {
@@ -28,7 +27,6 @@ export class ConstDetail extends LitElement {
 
   constructor() {
     super();
-    console.log("Fdfd");
     this.converter = new showdown.Converter();
   }
 

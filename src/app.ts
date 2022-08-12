@@ -9,6 +9,7 @@ import {listPallets} from './polka/pallet';
 import './component/navigation';
 import './component/header';
 import './component/search';
+import './component/busy-indicator';
 
 @customElement('app-root')
 export class App extends LitElement {
@@ -25,6 +26,14 @@ export class App extends LitElement {
 
     main {
       margin-left: var(--drawer-width);
+    }
+
+    .loading {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   `;
 
@@ -60,7 +69,13 @@ export class App extends LitElement {
           </main>
           <footer></footer>
         `,
-        () => html`Loading metadata...`
+        () => html`
+          <div class="loading">
+            <ui-busy-indicator size="small"></ui-busy-indicator>
+            <ui-busy-indicator size="medium"></ui-busy-indicator>
+            <ui-busy-indicator size="large"></ui-busy-indicator>
+          </div>
+        `
       )}
     `;
   }
