@@ -14,8 +14,8 @@ import {PalletDoc} from '../polka/pallet';
 export class Navigation extends LitElement {
   private db = new DatabaseController<RouterLocation>(
     this,
-    locationCursor,
-    this.localName
+    this.localName,
+    locationCursor
   );
 
   @property({attribute: false})

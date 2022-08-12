@@ -12,7 +12,7 @@ import './component/search';
 
 @customElement('app-root')
 export class App extends LitElement {
-  private db = new DatabaseController<Api>(this, apiCursor, this.localName);
+  private db = new DatabaseController<Api>(this, this.localName, apiCursor);
 
   @property({attribute: false})
   data = {pallets: [], chain: null, version: null, loaded: false};

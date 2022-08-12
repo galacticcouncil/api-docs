@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {customElement, property, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
@@ -13,7 +13,7 @@ import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
 import showdown from 'showdown';
-const converter = new showdown.Converter();
+//const converter = new showdown.Converter();
 
 @customElement('app-const')
 export class ConstDetail extends LitElement {
@@ -22,6 +22,15 @@ export class ConstDetail extends LitElement {
 
   @property({attribute: false})
   itemMetadata = null;
+
+  @state()
+  private converter = null;
+
+  constructor() {
+    super();
+    console.log("Fdfd");
+    this.converter = new showdown.Converter();
+  }
 
   static styles = [baseStyles, detailStyles];
 
@@ -51,7 +60,7 @@ export class ConstDetail extends LitElement {
           <h1>${this.item.name}</h1>
           <div class="doc">
             ${this.itemMetadata.docs.map((doc: string) => {
-              const ht = converter.makeHtml(doc);
+              const ht = this.converter.makeHtml(doc);
               return html` ${unsafeHTML(ht)}`;
             })}
           </div>

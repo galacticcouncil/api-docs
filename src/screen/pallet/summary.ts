@@ -20,7 +20,7 @@ import './detail/events';
 
 @customElement('app-pallet')
 export class Pallet extends LitElement implements BeforeEnterObserver {
-  private db = new DatabaseController<Api>(this, apiCursor, this.localName);
+  private db = new DatabaseController<Api>(this, this.localName, apiCursor);
 
   @state()
   params = null;

@@ -11,7 +11,7 @@ import '../component/search';
 
 @customElement('app-home')
 export class Home extends LitElement {
-  private db = new DatabaseController<Api>(this, apiCursor, this.localName);
+  private db = new DatabaseController<Api>(this, this.localName, apiCursor);
 
   static styles = [
     baseStyles,

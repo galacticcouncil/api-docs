@@ -10,18 +10,14 @@ export class DatabaseController<T> implements ReactiveController {
 
   constructor(
     host: ReactiveControllerHost,
-    cursor: Cursor<T>,
-    watchId: string
+    watchId: string,
+    cursor: Cursor<T>
   ) {
     this.state = cursor.deref();
     this.host = host;
-    this.cursor = cursor;
     this.watchId = watchId;
+    this.cursor = cursor;
     host.addController(this);
-  }
-
-  setKeyValue(key: T): void {
-    this.state = key;
   }
 
   hostConnected() {

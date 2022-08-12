@@ -12,8 +12,8 @@ import {baseStyles} from '../base.css';
 export class Header extends LitElement {
   private db = new DatabaseController<RouterLocation>(
     this,
-    locationCursor,
-    this.localName
+    this.localName,
+    locationCursor
   );
 
   @property({attribute: false})

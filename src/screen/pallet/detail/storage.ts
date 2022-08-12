@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {customElement, property, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
@@ -14,7 +14,6 @@ import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
 import showdown from 'showdown';
-const converter = new showdown.Converter();
 
 @customElement('app-storage')
 export class StorageDetail extends LitElement {
@@ -23,6 +22,14 @@ export class StorageDetail extends LitElement {
 
   @property({attribute: false})
   itemMetadata = null;
+
+  @state()
+  private converter = null;
+
+  constructor() {
+    super();
+    this.converter = new showdown.Converter();
+  }
 
   static styles = [baseStyles, detailStyles];
 
@@ -37,11 +44,17 @@ export class StorageDetail extends LitElement {
   }
 
   getInput(): String {
-    return lookupStorageInputLegacy(apiCursor.deref().metadata, this.itemMetadata);
+    return lookupStorageInputLegacy(
+      apiCursor.deref().metadata,
+      this.itemMetadata
+    );
   }
 
   getOutput(): String {
-    return lookupStorageOutputLegacy(apiCursor.deref().metadata, this.itemMetadata);
+    return lookupStorageOutputLegacy(
+      apiCursor.deref().metadata,
+      this.itemMetadata
+    );
   }
 
   render() {
@@ -53,7 +66,7 @@ export class StorageDetail extends LitElement {
           <h1>${this.item.name}</h1>
           <div class="doc">
             ${this.itemMetadata.docs.map((doc: string) => {
-              const ht = converter.makeHtml(doc);
+              const ht = this.converter.makeHtml(doc);
               return html` ${unsafeHTML(ht)}`;
             })}
           </div>
