@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import {htmlPlugin} from '@craftamap/esbuild-plugin-html';
+import {parse} from 'node-html-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,8 +13,12 @@ const indexTemplate = fs.readFileSync(
   'utf8'
 );
 
-const devScript = '<script type="module" src="./out/index.js"></script>';
-const baseUrl = '<base href="/" />';
+const indexDOM = parse(indexTemplate);
+const baseNode = indexDOM.getElementsByTagName('base')[0];
+const newBaseNode = baseNode.setAttribute('href', process.env.BASE_HREF || '/');
+const script = indexDOM.getElementsByTagName('script')[0];
+indexDOM.exchangeChild(baseNode, newBaseNode);
+script.remove();
 
 esbuild.build({
   entryPoints: ['src/index.ts'],
@@ -29,12 +34,7 @@ esbuild.build({
           entryPoints: ['src/index.ts'],
           filename: 'index.html',
           scriptLoading: 'module',
-          define: {
-            baseHref: process.env.BASE_HREF || '/',
-          },
-          htmlTemplate: indexTemplate
-            .replace(devScript, '')
-            .replace(baseUrl, '<base href="<%- define.baseHref %>" />'),
+          htmlTemplate: indexDOM.toString(),
         },
       ],
     }),
