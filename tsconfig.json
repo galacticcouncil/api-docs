@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2019",
-    "module": "es2020",
+    "target": "es2021",
+    "module": "esnext",
     "moduleResolution": "node",
     "lib": [
-      "es2020",
+      "esnext",
       "dom",
       "dom.iterable"
     ],
@@ -12,6 +12,7 @@
     "sourceMap": true,
     "inlineSources": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "noImplicitAny": false,
     "outDir": "./out",
@@ -19,7 +20,7 @@
     "importHelpers": false
   },
   "include": [
-    "src/**/*.ts",
+    "src/**/*.ts"
   ],
   "exclude": []
 }
