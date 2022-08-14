@@ -1,7 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
-import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
 import {apiCursor} from '../../../db';
 import {lookupExtrinsicMetadata} from '../../../polka/lookup';
@@ -9,7 +8,7 @@ import {lookupExtrinsicMetadata} from '../../../polka/lookup';
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
-import showdown from 'showdown';
+import '../../../component/markdown';
 
 @customElement('app-extrinsic')
 export class ExtrinsicDetail extends LitElement {
@@ -18,14 +17,6 @@ export class ExtrinsicDetail extends LitElement {
 
   @property({attribute: false})
   itemMetadata = null;
-
-  @state()
-  private converter = null;
-
-  constructor() {
-    super();
-    this.converter = new showdown.Converter();
-  }
 
   static styles = [baseStyles, detailStyles];
 
@@ -41,7 +32,11 @@ export class ExtrinsicDetail extends LitElement {
 
   getInput(): String {
     const fields = this.itemMetadata.fields;
-    return '(\n' + fields.map(f => `  ${f.name}: ${f.typeName}`).join(',\n') + '\n)';
+    return (
+      '(\n' +
+      fields.map((f) => `  ${f.name}: ${f.typeName}`).join(',\n') +
+      '\n)'
+    );
   }
 
   render() {
@@ -52,10 +47,7 @@ export class ExtrinsicDetail extends LitElement {
           <span class="section">Extrinsic</span>
           <h1>${this.item.name}</h1>
           <div class="doc">
-            ${this.itemMetadata.docs.map((doc: string) => {
-              const ht = this.converter.makeHtml(doc);
-              return html` ${unsafeHTML(ht)}`;
-            })}
+            <ui-markdown .docs=${this.itemMetadata.docs}></ui-markdown>
           </div>
           <div class="signature">
             <pre>${this.item.name}${this.getInput()}</pre>
