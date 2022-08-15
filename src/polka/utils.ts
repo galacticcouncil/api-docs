@@ -20,3 +20,17 @@ export function unwrapStorageInput(
     }
   }
 }
+
+export function createDataTree(dataset: any) {
+  const hashTable = Object.create(null);
+  dataset.forEach(
+    (aData: any) => (hashTable[aData.ID] = {...aData, childNodes: []})
+  );
+  const dataTree = [];
+  dataset.forEach((aData: any) => {
+    if (aData.parentID)
+      hashTable[aData.parentID].childNodes.push(hashTable[aData.ID]);
+    else dataTree.push(hashTable[aData.ID]);
+  });
+  return dataTree;
+}

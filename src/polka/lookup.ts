@@ -162,3 +162,58 @@ export function lookupEventMetadata(
   const assetTypeId = events.value.type.toNumber();
   return lookupVariant(metadata, assetTypeId, eventName);
 }
+
+export function lookupStorageTypeOrigin(
+  metadata: MetadataLatest,
+  storageEntry: StorageEntryMetadataLatest
+) {
+  const type = storageEntry.type;
+  let lookupTypeId: SiLookupTypeId;
+  if (type.isMap) {
+    const {value} = type.asMap;
+    lookupTypeId = value;
+  } else if (type.isPlain) {
+    lookupTypeId = type.asPlain;
+  }
+
+  const lookup = lookupTypeOrigin(metadata, lookupTypeId, null, null, []);
+  const lookupFlatten = [].concat.apply([], lookup).flat();
+  return [...new Set(lookupFlatten)];
+}
+
+function lookupTypeOrigin(
+  metadata: MetadataLatest,
+  type: SiLookupTypeId,
+  parent: String,
+  name: String,
+  result: any[]
+) {
+  const typeName = getSiName(metadata.registry.lookup, type);
+  const siType = metadata.lookup.getSiType(type);
+  const siTypeDef = siType.def;
+
+  result.push({
+    id: type.toNumber(),
+    type: typeName,
+    parent: parent,
+    name: name,
+    def: siTypeDef.type,
+  });
+
+  if (siTypeDef.isSequence) {
+    const seq = siTypeDef.asSequence;
+    return lookupTypeOrigin(metadata, seq.type, typeName, null, result);
+  } else if (siTypeDef.isComposite) {
+    return siTypeDef.asComposite.fields.map((f) =>
+      lookupTypeOrigin(
+        metadata,
+        f.type,
+        typeName,
+        f.name.value.toHuman(),
+        result
+      )
+    );
+  } else {
+    return result;
+  }
+}
