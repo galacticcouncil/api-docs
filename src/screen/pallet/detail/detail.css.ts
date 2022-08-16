@@ -50,6 +50,7 @@ export const detailStyles = css`
   }
 
   .model-tree {
+    font-size: 14px;
     display: none;
   }
 
