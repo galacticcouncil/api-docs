@@ -242,41 +242,4 @@ function lookupTypeOrigin(
       return result;
     }
   }
-
-/*   if (siTypeDef.isSequence) {
-    const seq = siTypeDef.asSequence;
-    return lookupTypeOrigin(
-      metadata,
-      seq.type,
-      lookupId.toString() + ':' + name,
-      null,
-      result
-    );
-  } else if (siTypeDef.isComposite) {
-    return siTypeDef.asComposite.fields.map((f) =>
-      lookupTypeOrigin(
-        metadata,
-        f.type,
-        lookupId.toString() + ':' + name,
-        f.name.value.toHuman(),
-        result
-      )
-    );
-  } else if (siTypeDef.isVariant) {
-    return siTypeDef.asVariant.variants
-      .map((v) => {
-        const variantName = v.name.toHuman();
-        result.push({
-          id: variantName,
-          parentId: lookupId.toString() + ':' + name,
-          name: variantName,
-          def: 'Variant',
-        });
-        // Fields not supported !!!
-        return result;
-      })
-      .flat();
-  } else {
-    return result;
-  } */
 }
