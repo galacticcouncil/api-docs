@@ -47,9 +47,6 @@ export class StorageDetail extends LitElement {
         this.itemMetadata
       );
       const lookupTree = createTypeTree(lookup);
-
-      console.log(lookup);
-
       this.output = {
         lookup: lookup,
         lookupTree: lookupTree,
@@ -106,6 +103,15 @@ export class StorageDetail extends LitElement {
     }
   }
 
+  modelExpand(id: string) {
+    const model = this.shadowRoot.getElementById(id);
+    if (model.classList.contains('expanded')) {
+      model.classList.remove('expanded');
+    } else {
+      model.classList.add('expanded');
+    }
+  }
+
   render() {
     return html` ${when(
       this.itemMetadata,
@@ -117,15 +123,22 @@ export class StorageDetail extends LitElement {
             <ui-markdown .docs=${this.itemMetadata.docs}></ui-markdown>
           </div>
           <div class="signature">
-            <pre>
-${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre
-            >
+            <pre>${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre>
             ${when(
               this.output.lookup.length > 1,
               () =>
-                html` <div class="model">
-                  <div>Model</div>
-                  ${this.outputTemplate.map((i) => i)}
+                html` <div
+                  class="model"
+                  id="${this.item.name}"
+                  @click=${() => this.modelExpand(this.item.name)}
+                >
+                  <div class="model-bar">
+                    <h4>Model</h4>
+                    <span class="expand-collapse-icon"> </span>
+                  </div>
+                  <div class="model-tree">
+                    ${this.outputTemplate.map((i) => i)}
+                  </div>
                 </div>`
             )}
             <span>Signature</span>
