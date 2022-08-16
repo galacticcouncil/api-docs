@@ -183,36 +183,57 @@ export function lookupStorageTypeOrigin(
 
 function lookupTypeOrigin(
   metadata: MetadataLatest,
-  type: SiLookupTypeId,
+  lookupId: SiLookupTypeId,
   parent: String,
   name: String,
   result: any[]
 ) {
-  const typeName = getSiName(metadata.registry.lookup, type);
-  const siType = metadata.lookup.getSiType(type);
+  const typeName = getSiName(metadata.registry.lookup, lookupId);
+  const siType = metadata.lookup.getSiType(lookupId);
   const siTypeDef = siType.def;
 
   result.push({
-    id: type.toNumber(),
+    id: lookupId.toString() + ':' + name,
+    parentId: parent,
+    typeId: lookupId.toString(),
     type: typeName,
-    parent: parent,
     name: name,
     def: siTypeDef.type,
   });
 
   if (siTypeDef.isSequence) {
     const seq = siTypeDef.asSequence;
-    return lookupTypeOrigin(metadata, seq.type, typeName, null, result);
+    return lookupTypeOrigin(
+      metadata,
+      seq.type,
+      lookupId.toString() + ':' + name,
+      null,
+      result
+    );
   } else if (siTypeDef.isComposite) {
     return siTypeDef.asComposite.fields.map((f) =>
       lookupTypeOrigin(
         metadata,
         f.type,
-        typeName,
+        lookupId.toString() + ':' + name,
         f.name.value.toHuman(),
         result
       )
     );
+  } else if (siTypeDef.isVariant) {
+    return siTypeDef.asVariant.variants
+      .map((v) => {
+        const variantName = v.name.toHuman();
+        result.push({
+          id: variantName,
+          parentId: lookupId.toString() + ':' + name,
+          name: variantName,
+          def: 'Variant',
+        });
+        // Fields not supported !!!
+        return result;
+      })
+      .flat();
   } else {
     return result;
   }

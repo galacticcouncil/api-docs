@@ -21,16 +21,16 @@ export function unwrapStorageInput(
   }
 }
 
-export function createDataTree(dataset: any) {
+export function createTypeTree(lookup: any) {
   const hashTable = Object.create(null);
-  dataset.forEach(
-    (aData: any) => (hashTable[aData.ID] = {...aData, childNodes: []})
-  );
+  lookup.forEach((l: any) => (hashTable[l.id] = {...l, sub: []}));
   const dataTree = [];
-  dataset.forEach((aData: any) => {
-    if (aData.parentID)
-      hashTable[aData.parentID].childNodes.push(hashTable[aData.ID]);
-    else dataTree.push(hashTable[aData.ID]);
+  lookup.forEach((l: any) => {
+    if (l.parentId) {
+      hashTable[l.parentId].sub.push(hashTable[l.id]);
+    } else {
+      dataTree.push(hashTable[l.id]);
+    }
   });
-  return dataTree;
+  return dataTree[0];
 }
