@@ -1,7 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
-import {classMap} from 'lit/directives/class-map.js';
 
 import {apiCursor} from '../../../db';
 import {
@@ -11,12 +10,11 @@ import {
   lookupStorageTypeOrigin,
 } from '../../../polka/lookup';
 
-import {createTypeTree} from '../../../polka/utils';
-
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
 import '../../../component/markdown';
+import '../../../component/model-viewer';
 
 @customElement('app-storage')
 export class StorageDetail extends LitElement {
@@ -27,10 +25,7 @@ export class StorageDetail extends LitElement {
   itemMetadata = null;
 
   @state()
-  output = {lookup: [], lookupTree: null};
-
-  @property({attribute: false})
-  outputTemplate = [];
+  lookup = [];
 
   static styles = [baseStyles, detailStyles];
 
@@ -42,16 +37,10 @@ export class StorageDetail extends LitElement {
         this.item.name
       );
 
-      const lookup = lookupStorageTypeOrigin(
+      this.lookup = lookupStorageTypeOrigin(
         apiCursor.deref().metadata,
         this.itemMetadata
       );
-      const lookupTree = createTypeTree(lookup);
-      this.output = {
-        lookup: lookup,
-        lookupTree: lookupTree,
-      };
-      this.lookupTemplate(this.output.lookupTree, 0);
     }
   }
 
@@ -69,49 +58,6 @@ export class StorageDetail extends LitElement {
     );
   }
 
-  lookupHtml(level: number, info: String, emp: boolean) {
-    const itemClasses = {
-      'model-item': true,
-      emphasize: emp,
-    };
-    return html`<div
-      class=${classMap(itemClasses)}
-      style="margin-left:${16 * level}px"
-    >
-      ${info}
-    </div>`;
-  }
-
-  lookupTemplate(item: any, level: number) {
-    if (item.typeId !== '1') {
-      if (item.name && item.type) {
-        this.outputTemplate.push(
-          this.lookupHtml(level, `${item.type} (${item.name})`, false)
-        );
-      } else if (item.name) {
-        this.outputTemplate.push(this.lookupHtml(level, `${item.name}`, false));
-      } else if (item.type) {
-        this.outputTemplate.push(this.lookupHtml(level, `${item.type}`, false));
-      }
-    }
-
-    if (item.sub.length > 0) {
-      level++;
-      item.sub.map((i: any) => this.lookupTemplate(i, level));
-    } else {
-      return;
-    }
-  }
-
-  modelExpand(id: string) {
-    const model = this.shadowRoot.getElementById(id);
-    if (model.classList.contains('expanded')) {
-      model.classList.remove('expanded');
-    } else {
-      model.classList.add('expanded');
-    }
-  }
-
   render() {
     return html` ${when(
       this.itemMetadata,
@@ -124,23 +70,10 @@ export class StorageDetail extends LitElement {
           </div>
           <div class="signature">
             <pre>${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre>
-            ${when(
-              this.output.lookup.length > 1,
-              () =>
-                html` <div
-                  class="model"
-                  id="${this.item.name}"
-                  @click=${() => this.modelExpand(this.item.name)}
-                >
-                  <div class="model-bar">
-                    <h4>Model</h4>
-                    <span class="expand-collapse-icon"> </span>
-                  </div>
-                  <div class="model-tree">
-                    ${this.outputTemplate.map((i) => i)}
-                  </div>
-                </div>`
-            )}
+            <ui-model-viewer
+              .name=${this.item.name}
+              .lookup=${this.lookup}
+            ></ui-model-viewer>
             <span>Signature</span>
           </div>
         </div>

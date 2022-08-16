@@ -201,7 +201,49 @@ function lookupTypeOrigin(
     def: siTypeDef.type,
   });
 
-  if (siTypeDef.isSequence) {
+  switch (siTypeDef.type) {
+    case 'Sequence': {
+      const seq = siTypeDef.asSequence;
+      return lookupTypeOrigin(
+        metadata,
+        seq.type,
+        lookupId.toString() + ':' + name,
+        null,
+        result
+      );
+    }
+    case 'Composite': {
+      return siTypeDef.asComposite.fields.map((f) =>
+        lookupTypeOrigin(
+          metadata,
+          f.type,
+          lookupId.toString() + ':' + name,
+          f.name.value.toHuman(),
+          result
+        )
+      );
+    }
+    case 'Variant': {
+      return siTypeDef.asVariant.variants
+        .map((v) => {
+          const variantName = v.name.toHuman();
+          result.push({
+            id: variantName,
+            parentId: lookupId.toString() + ':' + name,
+            name: variantName,
+            def: 'Variant',
+          });
+          // Fields not supported !!!
+          return result;
+        })
+        .flat();
+    }
+    default: {
+      return result;
+    }
+  }
+
+/*   if (siTypeDef.isSequence) {
     const seq = siTypeDef.asSequence;
     return lookupTypeOrigin(
       metadata,
@@ -236,5 +278,5 @@ function lookupTypeOrigin(
       .flat();
   } else {
     return result;
-  }
+  } */
 }
