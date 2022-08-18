@@ -41,7 +41,7 @@ const routes = [
 ];
 
 const outlet = document.getElementById('app');
-export const router = new Router(outlet);
+const router = new Router(outlet);
 router.setRoutes(routes);
 
 window.addEventListener('vaadin-router-location-changed', (e) => {

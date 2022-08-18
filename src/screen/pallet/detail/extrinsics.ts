@@ -8,7 +8,7 @@ import {lookupExtrinsicMetadata} from '../../../polka/lookup';
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
-import '../../../component/markdown';
+import '../../../component/md-viewer';
 
 @customElement('app-extrinsic')
 export class ExtrinsicDetail extends LitElement {
@@ -47,7 +47,7 @@ export class ExtrinsicDetail extends LitElement {
           <span class="section">Extrinsic</span>
           <h1>${this.item.name}</h1>
           <div class="doc">
-            <ui-markdown .docs=${this.itemMetadata.docs}></ui-markdown>
+            <ui-md-viewer .docs=${this.itemMetadata.docs}></ui-md-viewer>
           </div>
           <div class="signature">
             <pre>${this.item.name}${this.getInput()}</pre>

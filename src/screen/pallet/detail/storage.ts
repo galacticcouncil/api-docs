@@ -13,7 +13,7 @@ import {
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
-import '../../../component/markdown';
+import '../../../component/md-viewer';
 import '../../../component/model-viewer';
 
 @customElement('app-storage')
@@ -66,7 +66,7 @@ export class StorageDetail extends LitElement {
           <span class="section">Storage</span>
           <h1>${this.item.name}</h1>
           <div class="doc">
-            <ui-markdown .docs=${this.itemMetadata.docs}></ui-markdown>
+            <ui-md-viewer .docs=${this.itemMetadata.docs}></ui-md-viewer>
           </div>
           <div class="signature">
             <pre>${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre>

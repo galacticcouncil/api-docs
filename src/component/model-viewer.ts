@@ -11,9 +11,6 @@ export class ModelViewer extends LitElement {
   @state()
   private model = [];
 
-  @state()
-  private template = [];
-
   @property({attribute: false})
   name = null;
 
@@ -119,7 +116,7 @@ export class ModelViewer extends LitElement {
       level++;
       item.sub.map((i: any) => this.lookupTemplate(i, level));
     } else {
-      this.template = this.model; // Make sure cmp is re-rendered once recursive template fill done
+      this.model = new Array(this.model); // New instance to force re-rendered
       return;
     }
   }
@@ -147,7 +144,7 @@ export class ModelViewer extends LitElement {
               <h4>Model</h4>
               <span class="expand-collapse-icon"> </span>
             </div>
-            <div class="model-tree">${this.template.map((i) => i)}</div>
+            <div class="model-tree">${this.model.map((i) => i)}</div>
           </div>`
       )}
     `;

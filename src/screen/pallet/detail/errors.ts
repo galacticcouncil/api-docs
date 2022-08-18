@@ -8,7 +8,7 @@ import {lookupErrorMetadata} from '../../../polka/lookup';
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
-import '../../../component/markdown';
+import '../../../component/md-viewer';
 
 @customElement('app-error')
 export class ErrorDetail extends LitElement {
@@ -38,7 +38,7 @@ export class ErrorDetail extends LitElement {
           <span class="section">Error</span>
           <h1>${this.item.name}</h1>
           <div class="doc">
-            <ui-markdown .docs=${this.itemMetadata.docs}></ui-markdown>
+            <ui-md-viewer .docs=${this.itemMetadata.docs}></ui-md-viewer>
           </div>
           <div class="signature">
             <pre>${this.item.name}</pre>

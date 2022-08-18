@@ -8,7 +8,7 @@ import {lookupEventMetadata} from '../../../polka/lookup';
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
-import '../../../component/markdown';
+import '../../../component/md-viewer';
 
 @customElement('app-event')
 export class EventDetail extends LitElement {
@@ -52,7 +52,7 @@ export class EventDetail extends LitElement {
             <span class="section">Event</span>
             <h1>${this.item.name}</h1>
             <div class="doc">
-              <ui-markdown .docs=${this.itemMetadata.docs}></ui-markdown>
+              <ui-md-viewer .docs=${this.itemMetadata.docs}></ui-md-viewer>
             </div>
             <div class="signature">
               <pre>${this.item.name} ${this.getTypes()}</pre>

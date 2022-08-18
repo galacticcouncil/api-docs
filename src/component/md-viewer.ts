@@ -4,8 +4,8 @@ import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
 import showdown from 'showdown';
 
-@customElement('ui-markdown')
-export class Markdown extends LitElement {
+@customElement('ui-md-viewer')
+export class MarkdownViewer extends LitElement {
   @property({attribute: false})
   docs = [];
 
