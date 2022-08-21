@@ -15,6 +15,9 @@ import {detailStyles} from './detail.css';
 
 import '../../../component/md-viewer';
 import '../../../component/model-viewer';
+import '../../../component/circular-progress';
+
+const leadingUppercaseReg = new RegExp('^[A-Z ]+'); // Select leading uppercase
 
 @customElement('app-storage')
 export class StorageDetail extends LitElement {
@@ -26,6 +29,12 @@ export class StorageDetail extends LitElement {
 
   @state()
   lookup = [];
+
+  @state()
+  dump = null;
+
+  @property({type: Boolean})
+  progress = false;
 
   static styles = [baseStyles, detailStyles];
 
@@ -58,24 +67,86 @@ export class StorageDetail extends LitElement {
     );
   }
 
+  normalizeName(section: string): string {
+    const start = leadingUppercaseReg.exec(section)[0];
+    const rest = section.split(leadingUppercaseReg)[1];
+    return start.toLowerCase() + rest;
+  }
+
+  readStorage() {
+    this.progress = true;
+    const apiQuery = apiCursor.deref().apiState.api.query;
+    const sectionName = this.normalizeName(this.item.section);
+    const section = apiQuery[sectionName];
+    const entryName = this.normalizeName(this.item.name);
+    section[entryName]
+      .entries()
+      .then((entry) => {
+        let test = [];
+        entry.forEach(([key, exposure]) => {
+          const keys = key.args.map((k) => {
+            return k.toHuman();
+          });
+          const exp = exposure.toHuman();
+          test.push([keys, exp]);
+        });
+        this.progress = false;
+        this.dump = JSON.stringify(test, null, 2);
+      })
+      .catch((error) => {
+        this.progress = false;
+        console.error(error);
+      });
+  }
+
+  clearStorage() {
+    this.dump = null;
+  }
+
   render() {
     return html` ${when(
       this.itemMetadata,
       () => html`
         <div class="detail">
           <span class="section">Storage</span>
-          <h1>${this.item.name}</h1>
+          <h2>${this.item.name}</h2>
           <div class="doc">
             <ui-md-viewer .docs=${this.itemMetadata.docs}></ui-md-viewer>
           </div>
-          <div class="signature">
-            <pre>${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre>
+          <div class="subsection">
+            <pre>
+${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre
+            >
             <ui-model-viewer
               .name=${this.item.name}
               .lookup=${this.lookup}
             ></ui-model-viewer>
-            <span>Signature</span>
+            <span class="title">Signature</span>
           </div>
+          <div class="actions">
+            ${when(
+              this.getInput(),
+              () => html`
+                <div class="btn">
+                  <button @click=${this.readStorage} ?disabled=${this.progress}>
+                    Read storage
+                  </button>
+                  <ui-circular-progress
+                    ?progress=${this.progress}
+                  ></ui-circular-progress>
+                </div>
+              `
+            )}
+          </div>
+          ${when(
+            this.dump,
+            () => html`
+              <div class="subsection">
+                <pre class="data">${this.dump}</pre>
+                <span @click=${this.clearStorage} class="close">x</span>
+              </div>
+            `
+          )}
         </div>
       `
     )}`;

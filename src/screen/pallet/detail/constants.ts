@@ -46,13 +46,13 @@ export class ConstDetail extends LitElement {
       () => html`
         <div class="detail">
           <span class="section">Constant</span>
-          <h1>${this.item.name}</h1>
+          <h2>${this.item.name}</h2>
           <div class="doc">
             <ui-md-viewer .docs=${this.itemMetadata.docs}></ui-md-viewer>
           </div>
-          <div class="signature">
+          <div class="subsection">
             <pre>${this.item.name}: ${this.getType()}</pre>
-            <span>Signature</span>
+            <span class="title">Signature</span>
           </div>
         </div>
       `

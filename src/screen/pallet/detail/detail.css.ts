@@ -19,7 +19,7 @@ export const detailStyles = css`
     font-weight: 600;
   }
 
-  .signature {
+  .subsection {
     background-color: #f6f8fa;
     font-size: 15px;
     padding: 12px;
@@ -27,7 +27,7 @@ export const detailStyles = css`
     position: relative;
   }
 
-  .signature > span {
+  .subsection > span.title {
     position: absolute;
     top: -8px;
     padding: 0 8px;
@@ -36,5 +36,31 @@ export const detailStyles = css`
     font-size: 13px;
     background-color: var(--color-secondary);
     font-weight: 550;
+  }
+
+  .subsection > span.close {
+    cursor: pointer;
+    position: absolute;
+    top: -8px;
+    right: 8px;
+    padding: 0 8px;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 13px;
+    background-color: var(--color-secondary);
+    font-weight: 550;
+  }
+
+  .subsection > span.close:hover {
+    color: #000;
+  }
+
+  .subsection > pre.data {
+    font-size: 13px;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
   }
 `;

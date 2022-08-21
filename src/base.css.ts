@@ -216,6 +216,37 @@ export const baseStyles = css`
 
   /* Buttons */
 
+  /* Button */
+
+  .btn {
+    position: relative;
+  }
+
+  .btn button {
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: var(--color-secondary);
+    color: #fff;
+  }
+
+  .btn button:hover {
+    cursor: pointer;
+    color: #444;
+  }
+
+  .btn button:disabled,
+  .btn button[disabled] {
+    color: rgba(0, 0, 0, 0.26);
+    background-image: none;
+    background-color: rgba(122, 192, 175, 0.5);
+    cursor: default;
+  }
+
   .goto > a {
     display: inline-flex;
     position: relative;
