@@ -23,6 +23,6 @@ export async function changeApi(chain: ParamValue, chainOptions: any[]) {
     createApi(rpc, () => {});
   } else {
     const defaultChain = chainOptions[0].name;
-    Router.go('/' + defaultChain);
+    Router.go(defaultChain);
   }
 }
