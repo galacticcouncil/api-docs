@@ -2,7 +2,7 @@ import {Router, ParamValue} from '@vaadin/router';
 import {createApi} from './polka/api';
 
 export async function getChains(onSuccess: (options: []) => void) {
-  await fetch(`/assets/data/config.json`)
+  await fetch(`assets/data/config.json`)
     .then((r) => r.json())
     .then((data) => {
       const options = data.chains.sort(function (
