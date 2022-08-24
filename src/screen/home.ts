@@ -1,7 +1,12 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
-import {AfterEnterObserver, RouterLocation} from '@vaadin/router';
+import {
+  AfterEnterObserver,
+  RouterLocation,
+  Router,
+  ParamValue,
+} from '@vaadin/router';
 
 import {DatabaseController} from '../db.ctrl';
 import {apiCursor, Api, readyCursor} from '../db';
@@ -53,29 +58,49 @@ export class Home extends LitElement implements AfterEnterObserver {
     `,
   ];
 
+  private onPageReload(chain: ParamValue) {
+    getChains((opts) => {
+      this.state = {
+        options: opts,
+        chain: chain,
+      };
+      if (chain) {
+        changeApi(chain, opts);
+      } else {
+        Router.go('Basilisk');
+      }
+    });
+  }
+
+  private onPageBack(chain: ParamValue) {
+    getChains((opts) => {
+      this.state = {
+        options: opts,
+        chain: chain,
+      };
+    });
+  }
+
   async onAfterEnter(location: RouterLocation) {
     const chain = location.params.chain;
     if (this.db.state === null) {
-      getChains((opts) => {
-        this.state = {
-          options: opts,
-          chain: chain,
-        };
-        changeApi(chain, opts);
-      });
+      this.onPageReload(chain);
     } else {
-      getChains((opts) => {
-        this.state = {
-          options: opts,
-          chain: chain,
-        };
-      });
+      this.onPageBack(chain);
     }
   }
 
-  reset() {
-    readyCursor.reset(false);
-    apiCursor.reset(null);
+  private closeConnection() {
+    apiCursor
+      .deref()
+      .apiState.api.disconnect()
+      .then(() => {
+        apiCursor.reset(null);
+        readyCursor.reset(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   render() {
@@ -112,7 +137,10 @@ export class Home extends LitElement implements AfterEnterObserver {
                 return when(
                   this.db.state.node !== item.rpc,
                   () => html`<div class="goto">
-                    <a href="${item.name}" @click=${() => this.reset()}>
+                    <a
+                      href="${item.name}"
+                      @click=${() => this.closeConnection()}
+                    >
                       <span class="goto-img"></span>
                       <span class="goto-txt">${item.name}</span>
                     </a>

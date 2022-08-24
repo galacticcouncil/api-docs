@@ -71,7 +71,9 @@ export class App extends LitElement {
         `,
         () => html`
           <div class="loading">
-            <ui-busy-indicator size="large"></ui-busy-indicator>
+            <ui-busy-indicator size="large">
+              <span>Initializing connection</span>
+            </ui-busy-indicator>
           </div>
         `
       )}
