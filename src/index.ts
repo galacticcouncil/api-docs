@@ -1,5 +1,4 @@
 import {Router} from '@vaadin/router';
-import {createApi} from './polka/api';
 
 import {locationCursor} from './db';
 
@@ -20,7 +19,11 @@ const routes = [
         component: 'app-home',
       },
       {
-        path: 'pallets/:pallet',
+        path: '/:chain',
+        component: 'app-home',
+      },
+      {
+        path: '/:chain/pallets/:pallet',
         children: [
           {
             path: '',
@@ -47,6 +50,3 @@ router.setRoutes(routes);
 window.addEventListener('vaadin-router-location-changed', (e) => {
   locationCursor.reset(e.detail.location);
 });
-
-/* Init */
-createApi('wss://rpc.basilisk.cloud', () => {});

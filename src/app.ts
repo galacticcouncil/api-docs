@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 
 import {DatabaseController} from './db.ctrl';
-import {apiCursor, Api} from './db';
+import {apiCursor, Api, readyCursor} from './db';
 import {listPallets} from './polka/pallet';
 
 import './component/navigation';
@@ -13,10 +13,10 @@ import './component/busy-indicator';
 
 @customElement('app-root')
 export class App extends LitElement {
-  private db = new DatabaseController<Api>(this, this.localName, apiCursor);
+  private db = new DatabaseController<Api>(this, apiCursor);
 
   @property({attribute: false})
-  data = {pallets: [], chain: null, version: null, loaded: false};
+  data = {pallets: [], chain: null, version: null};
 
   static styles = css`
     header {
@@ -38,15 +38,15 @@ export class App extends LitElement {
   `;
 
   async updated() {
-    if (this.db.state && !this.data.loaded) {
+    if (this.db.state && !readyCursor.deref()) {
       const metadata = this.db.state.metadata;
       const apiState = this.db.state.apiState;
       const pallets = listPallets(metadata);
       const version = apiState.specName + '/' + apiState.specVersion;
 
+      readyCursor.reset(true);
       this.data = {
         pallets: pallets,
-        loaded: true,
         chain: apiState.systemName,
         version: version,
       };

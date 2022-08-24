@@ -1,10 +1,10 @@
 import {LitElement, html, css} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {customElement, property, state} from 'lit/decorators.js';
 import {classMap} from 'lit/directives/class-map.js';
+import {RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from '../db.ctrl';
 import {locationCursor} from '../db';
-import {RouterLocation} from '@vaadin/router';
 
 import {baseStyles} from '../base.css';
 
@@ -12,14 +12,13 @@ import {PalletDoc} from '../polka/pallet';
 
 @customElement('ui-navigation')
 export class Navigation extends LitElement {
-  private db = new DatabaseController<RouterLocation>(
-    this,
-    this.localName,
-    locationCursor
-  );
+  private db = new DatabaseController<RouterLocation>(this, locationCursor);
+
+  @state()
+  params = null;
 
   @property({attribute: false})
-  data = {pallets: [], chain: null, version: null, loaded: false};
+  data = {pallets: [], chain: null, version: null};
 
   static styles = [
     baseStyles,
@@ -128,11 +127,16 @@ export class Navigation extends LitElement {
     `,
   ];
 
+  async onBeforeEnter(location: RouterLocation) {
+    this.params = location.params;
+  }
+
   render() {
+    const chain = this.db.state.params.chain;
     return html`
       <div class="navigation">
         <div class="toolbar">
-          <a href="">
+          <a href="${chain.toString()}">
             <img src="assets/img/logo/basilisk.svg" />
           </a>
           <div>
@@ -151,7 +155,9 @@ export class Navigation extends LitElement {
                   this.db.state.params.pallet === item.name,
               };
               return html`
-                <a class=${classMap(itemClasses)} href="pallets/${item.name}"
+                <a
+                  class=${classMap(itemClasses)}
+                  href="${chain.toString()}/pallets/${item.name}"
                   ><span> ${item.name} </span>
                 </a>
               `;

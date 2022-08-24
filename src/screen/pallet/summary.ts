@@ -5,6 +5,7 @@ import {BeforeEnterObserver, RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from '../../db.ctrl';
 import {apiCursor, Api} from '../../db';
+import {getChains, changeApi} from '../../effects';
 import {AssetDoc, AssetType} from '../../polka/assets';
 
 import type {Doc} from '../../polka/types';
@@ -20,7 +21,7 @@ import './detail/events';
 
 @customElement('app-pallet')
 export class Pallet extends LitElement implements BeforeEnterObserver {
-  private db = new DatabaseController<Api>(this, this.localName, apiCursor);
+  private db = new DatabaseController<Api>(this, apiCursor);
 
   @state()
   params = null;
@@ -65,6 +66,12 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
 
   async onBeforeEnter(location: RouterLocation) {
     this.params = location.params;
+    if (this.db.state === null) {
+      const chain = location.params.chain;
+      getChains((opts) => {
+        changeApi(chain, opts);
+      });
+    }
   }
 
   async updated() {

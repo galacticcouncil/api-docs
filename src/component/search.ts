@@ -18,6 +18,9 @@ export class Search extends LitElement {
   @property({attribute: false})
   assets = [];
 
+  @property({attribute: false})
+  chain = null;
+
   @property({type: String})
   query = '';
 
@@ -159,7 +162,7 @@ export class Search extends LitElement {
                     const nameParts = parse(item.name, nameMatches);
                     return html`
                       <a
-                        href="pallets/${item.section}/${item.type}/${item.name}"
+                        href="${this.chain}/pallets/${item.section}/${item.type}/${item.name}"
                       >
                         ${nameParts.map(
                           (part: {highlight: boolean; text: string}) => {

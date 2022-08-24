@@ -1,17 +1,22 @@
 import {LitElement, html, css} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import {customElement, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
+import {AfterEnterObserver, RouterLocation} from '@vaadin/router';
 
 import {DatabaseController} from '../db.ctrl';
-import {apiCursor, Api} from '../db';
+import {apiCursor, Api, readyCursor} from '../db';
+import {getChains, changeApi} from '../effects';
 
 import {baseStyles} from '../base.css';
 
 import '../component/search';
 
 @customElement('app-home')
-export class Home extends LitElement {
-  private db = new DatabaseController<Api>(this, this.localName, apiCursor);
+export class Home extends LitElement implements AfterEnterObserver {
+  private db = new DatabaseController<Api>(this, apiCursor);
+
+  @state()
+  private state = {options: [], chain: null};
 
   static styles = [
     baseStyles,
@@ -48,49 +53,76 @@ export class Home extends LitElement {
     `,
   ];
 
+  async onAfterEnter(location: RouterLocation) {
+    const chain = location.params.chain;
+    if (this.db.state === null) {
+      getChains((opts) => {
+        this.state = {
+          options: opts,
+          chain: chain,
+        };
+        changeApi(chain, opts);
+      });
+    } else {
+      getChains((opts) => {
+        this.state = {
+          options: opts,
+          chain: chain,
+        };
+      });
+    }
+  }
+
+  reset() {
+    readyCursor.reset(false);
+    apiCursor.reset(null);
+  }
+
   render() {
-    return html` ${when(
-      this.db.state,
-      () => html`
+    return html` ${when(this.db.state, () => {
+      const systemVersion = this.db.state.apiState.systemVersion.split(' ')[0];
+      const systemChain = this.db.state.apiState.systemChain;
+      const chainVersion =
+        this.db.state.apiState.specName +
+        '/' +
+        this.db.state.apiState.specVersion;
+      return html`
         <div class="dashboard">
-          <ui-search .assets=${this.db.state.assets}></ui-search>
+          <ui-search
+            .assets=${this.db.state.assets}
+            .chain=${this.state.chain}
+          ></ui-search>
           <div class="info">
             <h1>API Doc</h1>
-            <span class="version"
-              >${this.db.state.apiState.systemVersion.split(' ')[0]}</span
-            >
+            <span class="version">${systemVersion}</span>
             <div>
               <span>Chain:</span>
-              <span class="mono">${this.db.state.apiState.systemChain}</span>
+              <span class="mono">${systemChain}</span>
             </div>
             <div>
               <span>Version:</span>
-              <span class="mono"
-                >${this.db.state.apiState.specName}/${this.db.state.apiState
-                  .specVersion}</span
-              >
+              <span class="mono">${chainVersion}</span>
             </div>
             <div>
               <span>RPC:</span>
               <span class="mono">${this.db.state.node}</span>
             </div>
             <div class="links">
-              <div class="goto">
-                <a href="#pallets">
-                  <span class="goto-img"></span>
-                  <span class="goto-txt">Pallets</span>
-                </a>
-              </div>
-              <div class="goto">
-                <a href="#rpc">
-                  <span class="goto-img"></span>
-                  <span class="goto-txt">RPC Calls</span>
-                </a>
-              </div>
+              ${this.state.options.map((item: {name: string; rpc: string}) => {
+                return when(
+                  this.db.state.node !== item.rpc,
+                  () => html`<div class="goto">
+                    <a href="${item.name}" @click=${() => this.reset()}>
+                      <span class="goto-img"></span>
+                      <span class="goto-txt">${item.name}</span>
+                    </a>
+                  </div>`
+                );
+              })}
             </div>
           </div>
         </div>
-      `
-    )}`;
+      `;
+    })}`;
   }
 }

@@ -15,12 +15,15 @@ export interface Api {
 export interface State {
   api: Api;
   location: RouterLocation;
+  ready: Boolean;
 }
 
 export const db = defAtom<State>({
   api: null,
   location: null,
+  ready: false,
 });
 
 export const apiCursor = defCursor(db, ['api']);
 export const locationCursor = defCursor(db, ['location']);
+export const readyCursor = defCursor(db, ['ready']);
