@@ -67,7 +67,8 @@ export class Home extends LitElement implements AfterEnterObserver {
       if (chain) {
         changeApi(chain, opts);
       } else {
-        Router.go('Basilisk');
+        //Router.go('Basilisk');
+        window.location.href = 'Basilisk';
       }
     });
   }
