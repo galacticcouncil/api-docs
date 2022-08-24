@@ -1,6 +1,8 @@
 import {ReactiveController, ReactiveControllerHost} from 'lit';
 import type {Cursor} from '@thi.ng/atom/cursor';
 
+import short from 'short-uuid';
+
 export class DatabaseController<T> implements ReactiveController {
   private readonly host: ReactiveControllerHost;
   private watchId: string;
@@ -8,14 +10,10 @@ export class DatabaseController<T> implements ReactiveController {
 
   state: T = null;
 
-  constructor(
-    host: ReactiveControllerHost,
-    watchId: string,
-    cursor: Cursor<T>
-  ) {
+  constructor(host: ReactiveControllerHost, cursor: Cursor<T>) {
     this.state = cursor.deref();
     this.host = host;
-    this.watchId = watchId;
+    this.watchId = short.generate();
     this.cursor = cursor;
     host.addController(this);
   }
