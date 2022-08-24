@@ -1,7 +1,7 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
-import {AfterEnterObserver, RouterLocation} from '@vaadin/router';
+import {BeforeEnterObserver, RouterLocation, Router} from '@vaadin/router';
 
 import {DatabaseController} from '../db.ctrl';
 import {apiCursor, Api, readyCursor} from '../db';
@@ -12,7 +12,7 @@ import {baseStyles} from '../base.css';
 import '../component/search';
 
 @customElement('app-home')
-export class Home extends LitElement implements AfterEnterObserver {
+export class Home extends LitElement implements BeforeEnterObserver {
   private db = new DatabaseController<Api>(this, apiCursor);
 
   @state()
@@ -53,7 +53,7 @@ export class Home extends LitElement implements AfterEnterObserver {
     `,
   ];
 
-  async onAfterEnter(location: RouterLocation) {
+  async onBeforeEnter(location: RouterLocation) {
     const chain = location.params.chain;
     if (this.db.state === null) {
       getChains((opts) => {
@@ -61,7 +61,11 @@ export class Home extends LitElement implements AfterEnterObserver {
           options: opts,
           chain: chain,
         };
-        changeApi(chain, opts);
+        if (chain) {
+          changeApi(chain, opts);
+        } else {
+          Router.go('Basilisk');
+        }
       });
     } else {
       getChains((opts) => {

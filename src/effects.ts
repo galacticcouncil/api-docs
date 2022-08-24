@@ -1,4 +1,4 @@
-import {Router, ParamValue} from '@vaadin/router';
+import {ParamValue} from '@vaadin/router';
 import {createApi} from './polka/api';
 
 export async function getChains(onSuccess: (options: []) => void) {
@@ -16,14 +16,8 @@ export async function getChains(onSuccess: (options: []) => void) {
 }
 
 export async function changeApi(chain: ParamValue, chainOptions: any[]) {
-  if (chain) {
-    const rpc = chainOptions.filter(
-      (opt: {name: string; rpc: string}) => opt.name === chain.toString()
-    )[0].rpc;
-    createApi(rpc, () => {});
-  } else {
-    const defaultChain = chainOptions[0].name;
-    console.log(defaultChain);
-    Router.go(defaultChain);
-  }
+  const rpc = chainOptions.filter(
+    (opt: {name: string; rpc: string}) => opt.name === chain.toString()
+  )[0].rpc;
+  createApi(rpc, () => {});
 }
