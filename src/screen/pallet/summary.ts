@@ -1,7 +1,7 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
 import {choose} from 'lit/directives/choose.js';
-import {BeforeEnterObserver, RouterLocation} from '@vaadin/router';
+import {BeforeEnterObserver, RouterLocation, ParamValue} from '@vaadin/router';
 
 import {DatabaseController} from '../../db.ctrl';
 import {apiCursor, Api} from '../../db';
@@ -64,13 +64,17 @@ export class Pallet extends LitElement implements BeforeEnterObserver {
     `,
   ];
 
+  private onPageReload(chain: ParamValue) {
+    getChains((opts) => {
+      changeApi(chain, opts);
+    });
+  }
+
   async onBeforeEnter(location: RouterLocation) {
     this.params = location.params;
     if (this.db.state === null) {
       const chain = location.params.chain;
-      getChains((opts) => {
-        changeApi(chain, opts);
-      });
+      this.onPageReload(chain);
     }
   }
 

@@ -1,12 +1,7 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
-import {
-  AfterEnterObserver,
-  RouterLocation,
-  Router,
-  ParamValue,
-} from '@vaadin/router';
+import {AfterEnterObserver, RouterLocation, ParamValue} from '@vaadin/router';
 
 import {DatabaseController} from '../db.ctrl';
 import {apiCursor, Api, readyCursor} from '../db';
@@ -67,7 +62,6 @@ export class Home extends LitElement implements AfterEnterObserver {
       if (chain) {
         changeApi(chain, opts);
       } else {
-        //Router.go('Basilisk');
         window.location.href = 'Basilisk';
       }
     });
