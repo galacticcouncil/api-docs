@@ -9,6 +9,7 @@ import {
   lookupStorageInputLegacy,
   lookupStorageTypeOrigin,
 } from '../../../polka/lookup';
+import {decapitalize} from "../../../polka/utils";
 
 import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
@@ -16,8 +17,6 @@ import {detailStyles} from './detail.css';
 import '../../../component/md-viewer';
 import '../../../component/model-viewer';
 import '../../../component/circular-progress';
-
-const leadingUppercaseReg = new RegExp('^[A-Z ]+'); // Select leading uppercase
 
 @customElement('app-storage')
 export class StorageDetail extends LitElement {
@@ -67,18 +66,12 @@ export class StorageDetail extends LitElement {
     );
   }
 
-  normalizeName(section: string): string {
-    const start = leadingUppercaseReg.exec(section)[0];
-    const rest = section.split(leadingUppercaseReg)[1];
-    return start.toLowerCase() + rest;
-  }
-
   readStorage() {
     this.progress = true;
     const apiQuery = apiCursor.deref().apiState.api.query;
-    const sectionName = this.normalizeName(this.item.section);
+    const sectionName = decapitalize(this.item.section);
     const section = apiQuery[sectionName];
-    const entryName = this.normalizeName(this.item.name);
+    const entryName = decapitalize(this.item.name);
     section[entryName]
       .entries()
       .then((entry) => {
@@ -125,7 +118,7 @@ ${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre
           </div>
           <div class="actions">
             ${when(
-              this.getInput(),
+              this.getInput() && !this.dump,
               () => html`
                 <div class="btn">
                   <button @click=${this.readStorage} ?disabled=${this.progress}>

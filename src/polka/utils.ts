@@ -34,3 +34,11 @@ export function createTypeTree(lookup: any) {
   });
   return dataTree[0];
 }
+
+const leadingUppercaseReg = new RegExp('^[A-Z ]'); // Select leading uppercase
+
+export function decapitalize(s: string): string {
+  const start = leadingUppercaseReg.exec(s)[0];
+  const rest = s.split(leadingUppercaseReg)[1];
+  return start.toLowerCase() + rest;
+}

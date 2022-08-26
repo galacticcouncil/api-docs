@@ -120,7 +120,7 @@ export class Home extends LitElement implements AfterEnterObserver {
               <span class="mono">${systemChain}</span>
             </div>
             <div>
-              <span>Version:</span>
+              <span>Runtime:</span>
               <span class="mono">${chainVersion}</span>
             </div>
             <div>
@@ -128,6 +128,7 @@ export class Home extends LitElement implements AfterEnterObserver {
               <span class="mono">${this.db.state.node}</span>
             </div>
             <div class="links">
+              Connect to another chain
               ${this.state.options.map((item: {name: string; rpc: string}) => {
                 return when(
                   this.db.state.node !== item.rpc,

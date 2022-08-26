@@ -12,6 +12,7 @@ import {baseStyles} from '../../../base.css';
 import {detailStyles} from './detail.css';
 
 import '../../../component/md-viewer';
+import {decapitalize} from "../../../polka/utils";
 
 @customElement('app-const')
 export class ConstDetail extends LitElement {
@@ -21,15 +22,21 @@ export class ConstDetail extends LitElement {
   @property({attribute: false})
   itemMetadata = null;
 
+  @property({attribute: false})
+  itemValue = null;
+
   static styles = [baseStyles, detailStyles];
 
   async updated() {
     if (this.item && this.itemMetadata == null) {
+      const {metadata, apiState} = apiCursor.deref();
+      const {section, name} = this.item;
       this.itemMetadata = lookupConstantsMetadata(
-        apiCursor.deref().metadata,
-        this.item.section,
-        this.item.name
+        metadata,
+        section,
+        name
       );
+      this.itemValue = apiState.api.consts[decapitalize(section)][decapitalize(name)];
     }
   }
 
@@ -53,6 +60,9 @@ export class ConstDetail extends LitElement {
           <div class="subsection">
             <pre>${this.item.name}: ${this.getType()}</pre>
             <span class="title">Signature</span>
+          </div>
+          <div class="subsection">
+            <pre class="data">${this.itemValue}</pre>
           </div>
         </div>
       `
