@@ -95,7 +95,6 @@ export class StorageDetail extends LitElement {
       const data = await storage();
       const humanized = data.toHuman();
       this.dump = typeof humanized === 'string' ? data.toString() : JSON.stringify(humanized, null, 2);
-      console.log(this.dump);
       this.progress = false;
     }
   }
