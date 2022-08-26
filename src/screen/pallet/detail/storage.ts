@@ -66,30 +66,38 @@ export class StorageDetail extends LitElement {
     );
   }
 
-  readStorage() {
+  async readStorage() {
     this.progress = true;
     const apiQuery = apiCursor.deref().apiState.api.query;
     const sectionName = decapitalize(this.item.section);
     const section = apiQuery[sectionName];
     const entryName = decapitalize(this.item.name);
-    section[entryName]
-      .entries()
-      .then((entry) => {
-        let test = [];
-        entry.forEach(([key, exposure]) => {
-          const keys = key.args.map((k) => {
-            return k.toHuman();
+    const storage = section[entryName]
+    if (this.getInput()) {
+      storage.entries()
+        .then((entry) => {
+          let test = [];
+          entry.forEach(([key, exposure]) => {
+            const keys = key.args.map((k) => {
+              return k.toHuman();
+            });
+            const exp = exposure.toHuman();
+            test.push([keys, exp]);
           });
-          const exp = exposure.toHuman();
-          test.push([keys, exp]);
+          this.progress = false;
+          this.dump = JSON.stringify(test, null, 2);
+        })
+        .catch((error) => {
+          this.progress = false;
+          console.error(error);
         });
-        this.progress = false;
-        this.dump = JSON.stringify(test, null, 2);
-      })
-      .catch((error) => {
-        this.progress = false;
-        console.error(error);
-      });
+    } else {
+      const data = await storage();
+      const humanized = data.toHuman();
+      this.dump = typeof humanized === 'string' ? data.toString() : JSON.stringify(humanized, null, 2);
+      console.log(this.dump);
+      this.progress = false;
+    }
   }
 
   clearStorage() {
@@ -118,7 +126,7 @@ ${this.item.name}(${this.getInput()}): ${this.getOutput()}</pre
           </div>
           <div class="actions">
             ${when(
-              this.getInput() && !this.dump,
+              !this.dump,
               () => html`
                 <div class="btn">
                   <button @click=${this.readStorage} ?disabled=${this.progress}>
