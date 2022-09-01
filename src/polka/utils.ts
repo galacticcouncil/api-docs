@@ -35,7 +35,7 @@ export function createTypeTree(lookup: any) {
   return dataTree[0];
 }
 
-const leadingUppercaseReg = new RegExp('^[A-Z ]'); // Select leading uppercase
+const leadingUppercaseReg = new RegExp('^[A-Z]+'); // Select leading uppercase
 
 export function decapitalize(s: string): string {
   const start = leadingUppercaseReg.exec(s)[0];
