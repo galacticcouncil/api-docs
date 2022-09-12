@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 
+import {apiCursor} from '../db';
 import {baseStyles} from '../base.css';
 
 import {createTypeTree} from '../polka/utils';
@@ -42,6 +43,10 @@ export class ModelViewer extends LitElement {
 
       .model-item {
         position: relative;
+      }
+
+      .model-item > a:hover {
+        text-decoration: underline;
       }
 
       .model-tree .model-item:not(:first-of-type)::after {
@@ -95,21 +100,40 @@ export class ModelViewer extends LitElement {
     this.lookupTemplate(lookupTree, 0);
   }
 
-  lookupHtml(level: number, info: String) {
-    return html`<div class="model-item" style="margin-left:${16 * level}px">
-      ${info}
-    </div>`;
+  lookupLink(typeDef: any, type: string) {
+    return html`<a
+      href="https://rustdocs.bsx.fi/basilisk/?search=${typeDef.namespace ||
+      typeDef.type}&go_to_first=true"
+      target="_blank"
+      >${type}</a
+    >`;
+  }
+
+  getTypeDef(typeId: string) {
+    return apiCursor.deref().metadata.lookup.getTypeDef(parseInt(typeId));
+  }
+
+  lookupHtml(level: number, item: any) {
+    if (item.name && item.type) {
+      const typeDef = this.getTypeDef(item.typeId);
+      return html`<div class="model-item" style="margin-left:${16 * level}px">
+        ${item.name}: ${this.lookupLink(typeDef, item.type)}
+      </div>`;
+    } else if (item.name) {
+      return html`<div class="model-item" style="margin-left:${16 * level}px">
+        ${item.name}
+      </div>`;
+    } else if (item.type) {
+      const typeDef = this.getTypeDef(item.typeId);
+      return html`<div class="model-item" style="margin-left:${16 * level}px">
+        ${this.lookupLink(typeDef, item.type)}
+      </div>`;
+    }
   }
 
   lookupTemplate(item: any, level: number) {
     if (item.typeId !== '1') {
-      if (item.name && item.type) {
-        this.model.push(this.lookupHtml(level, `${item.type} (${item.name})`));
-      } else if (item.name) {
-        this.model.push(this.lookupHtml(level, `${item.name}`));
-      } else if (item.type) {
-        this.model.push(this.lookupHtml(level, `${item.type}`));
-      }
+      this.model.push(this.lookupHtml(level, item));
     }
 
     if (item.sub.length > 0) {
@@ -135,12 +159,8 @@ export class ModelViewer extends LitElement {
       ${when(
         this.lookup.length > 1,
         () =>
-          html` <div
-            class="model"
-            id="${this.name}"
-            @click=${() => this.modelExpand(this.name)}
-          >
-            <div class="model-bar">
+          html` <div class="model" id="${this.name}">
+            <div class="model-bar" @click=${() => this.modelExpand(this.name)}>
               <h4>Model</h4>
               <span class="expand-collapse-icon"> </span>
             </div>
