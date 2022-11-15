@@ -6,6 +6,8 @@
       "name": "Basilisk-Rococo",
       "rpc": "wss://rococo-basilisk-rpc.hydration.dev"
     },
-    {"name": "HydraDX", "rpc": "wss://rpc.hydradx.cloud"}
+    {"name": "HydraDX", "rpc": "wss://rpc.hydradx.cloud"},
+    {"name": "HydraDX-Devnet", "rpc": "wss://rpc01.hydradx.dev"},
+    {"name": "HydraDX-Rococo", "rpc": "wss://rococo-hydradx-rpc.hydration.dev"}
   ]
 }
