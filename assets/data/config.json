@@ -1,6 +1,6 @@
 {
   "chains": [
-    {"name": "Local", "ws://localhost:8000"},
+    {"name": "Local", "rpc": "ws://localhost:8000"},
     {"name": "Basilisk", "rpc": "wss://rpc.basilisk.cloud"},
     {
       "name": "Paseo-Basilisk",
