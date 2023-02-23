@@ -1,6 +1,7 @@
 {
   "chains": [
-    {"name": "Basilisk", "rpc": "wss://basilisk-rpc.dwellir.com"},
+    {"name": "Local", "ws://localhost:8000"},
+    {"name": "Basilisk", "rpc": "wss://rpc.basilisk.cloud"},
     {
       "name": "Paseo-Basilisk",
       "rpc": "wss://basilisk-rococo-rpc.play.hydration.cloud"
