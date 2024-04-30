@@ -41,7 +41,7 @@ export class ErrorDetail extends LitElement {
             <ui-md-viewer .docs=${this.itemMetadata.docs}></ui-md-viewer>
           </div>
           <div class="subsection">
-            <pre>${this.item.name}</pre>
+            <pre>${this.item.name} = ${this.itemMetadata.index}</pre>
             <span class="title">Signature</span>
           </div>
         </div>
