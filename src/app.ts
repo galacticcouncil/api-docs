@@ -47,7 +47,7 @@ export class App extends LitElement {
       readyCursor.reset(true);
       this.data = {
         pallets: pallets,
-        chain: apiState.systemName,
+        chain: apiState.systemChain,
         version: version,
       };
     }
