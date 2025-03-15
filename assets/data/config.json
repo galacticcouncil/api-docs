@@ -2,11 +2,12 @@
   "chains": [
     {"name": "Basilisk", "rpc": "wss://basilisk-rpc.dwellir.com"},
     {
-      "name": "Basilisk-Rococo",
-      "rpc": "wss://rococo-basilisk-rpc.hydration.dev"
+      "name": "Paseo-Basilisk",
+      "rpc": "wss://basilisk-rococo-rpc.play.hydration.cloud"
     },
-    {"name": "HydraDX", "rpc": "wss://rpc.hydradx.cloud"},
-    {"name": "HydraDX-Rococo", "rpc": "wss://hydradx-rococo-rpc.play.hydration.cloud"},
-    {"name": "HydraDX-Nice", "rpc": "wss://rpc.nice.hydration.cloud"}
+    {"name": "Hydration", "rpc": "wss://rpc.hydradx.cloud"},
+    {"name": "Paseo-Hydration", "rpc": "wss://paseo.rpc.hydration.cloud"},
+    {"name": "Nice-Hydration", "rpc": "wss://rpc.nice.hydration.cloud"},
+    {"name": "Lark-Hydration", "rpc": "wss://rpc.lark.hydration.cloud"},
   ]
 }
