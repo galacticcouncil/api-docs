@@ -9,6 +9,6 @@
     {"name": "Hydration", "rpc": "wss://rpc.hydradx.cloud"},
     {"name": "Paseo-Hydration", "rpc": "wss://paseo.rpc.hydration.cloud"},
     {"name": "Nice-Hydration", "rpc": "wss://rpc.nice.hydration.cloud"},
-    {"name": "Lark-Hydration", "rpc": "wss://rpc.lark.hydration.cloud"},
+    {"name": "Lark-Hydration", "rpc": "wss://rpc.lark.hydration.cloud"}
   ]
 }
