@@ -24,7 +24,7 @@ jobs:
       - name: Build website
         run: npm run package:github
       - name: Upload website artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         with:
           name: website
           path: dist
@@ -35,7 +35,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Download website artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: website
         path: dist
