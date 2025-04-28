@@ -1,0 +1,15 @@
+{
+  "chains": [
+    {"name": "Local", "rpc": "ws://localhost:8000"},
+    {"name": "Basilisk", "rpc": "wss://rpc.basilisk.cloud"},
+    {
+      "name": "Paseo-Basilisk",
+      "rpc": "wss://basilisk-rococo-rpc.play.hydration.cloud"
+    },
+    {"name": "Hydration", "rpc": "wss://rpc.hydradx.cloud"},
+    {"name": "HydraDX", "rpc": "wss://rpc.hydradx.cloud"},
+    {"name": "Paseo-Hydration", "rpc": "wss://paseo.rpc.hydration.cloud"},
+    {"name": "Nice-Hydration", "rpc": "wss://rpc.nice.hydration.cloud"},
+    {"name": "Lark-Hydration", "rpc": "wss://rpc.lark.hydration.cloud"}
+  ]
+}
