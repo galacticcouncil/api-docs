@@ -6,6 +6,7 @@
       "name": "Paseo-Basilisk",
       "rpc": "wss://basilisk-rococo-rpc.play.hydration.cloud"
     },
+    {"name": "Hydration-N", "rpc": "wss://hydration-rpc.n.dwellir.com"},
     {"name": "Hydration", "rpc": "wss://rpc.hydradx.cloud"},
     {"name": "HydraDX", "rpc": "wss://rpc.hydradx.cloud"},
     {"name": "Paseo-Hydration", "rpc": "wss://paseo.rpc.hydration.cloud"},
